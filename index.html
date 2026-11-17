@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Училищен Будилник & Аларма за Междучасия</title>
+  
+  <meta name="theme-color" content="#3b82f6">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Звънец">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
+  <link rel="stylesheet" href="style.css?v=58">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="theme-shevitsa">
+  <main id="authGate" class="auth-gate">
+    <section class="auth-card">
+      <div class="auth-card-head">
+        <div class="logo-icon">🔔</div>
+        <div>
+          <h1>Училищен Будилник</h1>
+          <p id="authIntro">Влез с личния си профил.</p>
+        </div>
+      </div>
+      <form id="loginForm" class="auth-form">
+        <label>Потребителско име<input id="loginUsername" class="form-input" autocomplete="username" required></label>
+        <label>Парола<input id="loginPassword" class="form-input" type="password" autocomplete="current-password" required></label>
+        <button class="btn btn-primary" type="submit">Вход</button>
+      </form>
+      <form id="registerForm" class="auth-form" hidden>
+        <label>Потребителско име<input id="registerUsername" class="form-input" autocomplete="username" required minlength="3" maxlength="40"></label>
+        <label>Парола (минимум 10 символа)<input id="registerPassword" class="form-input" type="password" autocomplete="new-password" required minlength="10"></label>
+        <label>Повтори паролата<input id="registerPasswordConfirm" class="form-input" type="password" autocomplete="new-password" required minlength="10"></label>
+        <label>Училище
+          <select id="registerSchool" class="form-select" required>
+            <option value="">Зареждане на училищата…</option>
+          </select>
+        </label>
+        <label id="registerOtherSchoolLabel" hidden>Друго училище<input id="registerOtherSchool" class="form-input" maxlength="100" placeholder="напр. СУ „Гео Милев“"></label>
+        <div class="class-picker">
+          <label>Клас
+            <select id="registerGrade" class="form-select" required>
+              <option value="">Изберете</option>
+            </select>
+          </label>
+          <label>Паралелка
+            <select id="registerClassLetter" class="form-select" required>
+              <option value="">Изберете</option>
+            </select>
+          </label>
+        </div>
+        <p class="auth-hint">Всеки ученик има собствена парола. Програмата, изпитите, ръчно добавените домашни, алармите и ваканциите са общи само за профилите в същото училище и клас. Синхронизираните от Shkolo домашни и изпити се виждат от целия клас, а забележките и похвалите остават лични за профила.</p>
+        <button class="btn btn-primary" type="submit">Създай профил</button>
+      </form>
+      <p id="authError" class="auth-error" role="alert"></p>
+      <div class="auth-actions-stack">
+        <button id="authModeBtn" class="btn btn-outline btn-sm" type="button">Нямаш профил? Регистрация</button>
+        <div class="auth-secondary-actions">
+          <button id="authAboutBtn" class="btn btn-outline btn-sm" type="button">ℹ️ За приложението</button>
+          <button id="authGuideBtn" class="btn btn-outline btn-sm" type="button">📸 Ръководство</button>
+          <button id="authFeedbackBtn" class="btn btn-outline btn-sm" type="button">✉️ Обратна връзка</button>
+          <button id="authLangBtn" class="btn btn-outline btn-sm" type="button" title="Switch language / Смени езика">🌐 English</button>
+        </div>
+      </div>
+      <div class="support-mini-box" data-support-block>
+        <a href="https://revolut.me/cryptohris" target="_blank" rel="noopener noreferrer" class="btn btn-support btn-sm">
+          <span>☕ Подкрепи проекта / Изпрати благодарност (<strong class="nowrap">@cryptohris</strong>)</span>
+        </a>
+        <p class="support-disclaimer">Жестът на благодарност към <strong>@cryptohris</strong> е доброволен, не е плащане за услуга и не дава предимства.</p>
+      </div>
+      <div class="auth-legal-links">
+        <a href="/privacy">Политика за поверителност</a> &bull;
+        <a href="/terms">Условия за ползване</a> &bull;
+        <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a>
+      </div>
+      <p class="auth-version-line">Версия 58 &middot; обновено 16.11.2026 &middot; Безплатно нестопанско приложение</p>
+    </section>
+  </main>
+  <div class="app-container" id="application" hidden>
+
+    <!-- Active school / class context -->
+    <div class="active-context-bar" id="activeContextBar" role="status" aria-live="polite">
+      <div class="active-context-item">
+        <span class="active-context-label">Активен профил</span>
+        <strong id="activeContextUser">—</strong>
+      </div>
+      <div class="active-context-item">
+        <span class="active-context-label">Училище</span>
+        <strong id="activeContextSchool">—</strong>
+      </div>
+      <div class="active-context-item">
+        <span class="active-context-label">Клас</span>
+        <strong id="activeContextClass">—</strong>
+      </div>
+    </div>
+
+    <!-- Top Audio Activation Banner (For Mobile Browsers) -->
+    <div id="audioBanner" class="audio-banner">
+      <div class="audio-banner-content">
+        <span class="icon">🔊</span>
+        <span>Активирайте звука на телефона за училищния звънец:</span>
+      </div>
+      <button id="unlockAudioBtn" class="btn btn-warning btn-sm" type="button">
+        ▶️ Активирай Звук и Звънец
+      </button>
+    </div>
+    
+    <!-- App Header / Navbar -->
+    <header class="app-header">
+      <div class="logo-area">
+        <div class="logo-icon">🔔</div>
+        <div>
+          <h1 class="logo-title" id="headerTitle">Училищен Будилник</h1>
+          <p class="logo-subtitle" id="headerSubtitle">1 смяна &bull; Таймери, програма &amp; звънец</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <span id="classroomIdentity" class="classroom-identity"></span>
+        <button id="headerLangBtn" class="btn btn-outline btn-sm" type="button" title="Switch language / Смени езика">
+          <span>🌐 EN</span>
+        </button>
+        <button id="aboutAppBtn" class="btn btn-outline btn-sm" type="button" title="Какво представлява приложението и как се използва">
+          <span>ℹ️ За приложението</span>
+        </button>
+        <button id="headerGuideBtn" class="btn btn-outline btn-sm" type="button" title="Визуално ръководство със снимки стъпка по стъпка">
+          <span>📸 Ръководство</span>
+        </button>
+        <button id="headerFeedbackBtn" class="btn btn-outline btn-sm" type="button" title="Обратна връзка / Съобщи за грешка">
+          <span>✉️ Обратна връзка</span>
+        </button>
+        <button id="headerSyncShkoloBtn" class="btn btn-outline btn-sm" title="Синхронизирай с Shkolo с един клик">
+          <span>🔄 Shkolo</span>
+        </button>
+        <button id="profileBtn" class="btn btn-icon btn-sm" title="Моят профил и смяна на парола">
+          <span>👤</span>
+        </button>
+        <button id="logoutBtn" class="btn btn-outline btn-sm" title="Изход от профила">Изход</button>
+        <!-- Audio Enable / Mute button -->
+        <button id="audioInitBtn" class="btn btn-outline btn-sm" title="Активиране / Заглушаване на звука">
+          <span class="icon">🔊</span>
+          <span class="btn-text">Звук</span>
+        </button>
+
+        <!-- Wake Lock / Screen keep on button for phones -->
+        <button id="wakeLockBtn" class="btn btn-icon btn-sm" title="Дръж екрана на телефона винаги включен">
+          <span>💡</span>
+        </button>
+
+        <!-- Fullscreen Button -->
+        <button id="fullscreenBtn" class="btn btn-icon btn-sm" title="Цял екран">
+          <span>⛶</span>
+        </button>
+
+        <select id="themeSelect" class="form-select form-select-sm" title="Избор на цветова тема">
+          <optgroup label="Български мотиви и светини">
+            <option value="shevitsa">🪡 Българска шевица — Елбетица</option>
+            <option value="gerb">🦁 Български герб — Златен лъв</option>
+            <option value="heroes">⚔️ Български герои — Възраждане</option>
+            <option value="tricolor">🇧🇬 Родна трибагрена — Розова долина</option>
+            <option value="cyrillic">📜 Българска кирилица — Св. Кирил и Методий</option>
+          </optgroup>
+          <optgroup label="Българска природа, традиции и технологии">
+            <option value="desert">🚀 Графитено черна — Български технологии и космос</option>
+            <option value="ocean">🏖️ Морско синя — Български плажове и курорти</option>
+            <option value="jungle">🌲 Зелена — Български гори и долини</option>
+            <option value="volcano">🔥 Червена — Нестинари в Странджа</option>
+            <option value="snow">🏔️ Алпийска — Рила и Пирин</option>
+          </optgroup>
+        </select>
+        <div class="theme-intensity-control" id="themeIntensityControl" title="Интензитет на цвета на темата">
+          <span class="theme-intensity-icon" aria-hidden="true">🎨</span>
+          <input type="range" id="themeIntensityRange" class="theme-intensity-slider" min="20" max="150" step="5" value="100" aria-label="Интензитет на цвета на темата" title="Плъзни за регулиране на интензитета на цвета на темата">
+          <span id="themeIntensityValue" class="theme-intensity-value">100%</span>
+        </div>
+      </div>
+    </header>
+
+    <div id="sharedSyncStatus" class="shared-sync-status" role="status" aria-live="polite">Свързване със споделените данни…</div>
+
+    <!-- Weekend / non-school day banner -->
+    <div id="weekendBanner" class="weekend-banner" role="status" hidden>
+      <span class="weekend-banner-icon">🌙</span>
+      <div>
+        <strong>Почивен ден — събота и неделя</strong>
+        <span>Училищният часовник и автоматичните звънци са изключени. Следващ учебен ден: понеделник.</span>
+      </div>
+    </div>
+
+    <!-- LIVE EXAM ALERT ACTIVE BANNER (Visible during exam class) -->
+    <div id="liveExamAlertBanner" class="live-exam-banner">
+      <span class="icon pulse">📝</span>
+      <span id="liveExamAlertText">⚠️ ВНИМАНИЕ: В този час има КОНТРОЛНО!</span>
+    </div>
+
+    <!-- 1. HERO CARD: BIG NORMAL CLOCK WITH DYNAMIC DAILY BACKGROUND -->
+    <section class="card hero-clock-card" id="mainClockCard">
+      <div class="hero-clock-top">
+        <div class="daily-theme-badge" id="dailyThemeBadge">
+          <span>🌌 Звездна космическа нощ</span>
+        </div>
+        <div class="hero-clock-actions">
+          <button id="clockSettingsBtn" class="btn btn-outline btn-sm" title="Настрой заглавие, формат и размер на големия часовник">
+            <span>✏️ Настрой часовника</span>
+          </button>
+          <button id="cycleThemeBtn" class="btn btn-outline btn-sm theme-cycle-btn" title="Смени фоновата тема на часовника">
+            <span>🎨 Смени фона</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- BIG REAL TIME CLOCK -->
+      <div class="big-clock-face" id="currentTimeDisplay">00:00:00</div>
+      <div class="big-date-face" id="currentDateDisplay">Зареждане на дата...</div>
+
+      <div class="hero-clock-footer">
+        <span class="shift-tag" id="shiftTag">🌅 1 Смяна (08:00 - 13:50)</span>
+        <span class="clock-note" id="clockNote">Текущо астрономическо време</span>
+      </div>
+    </section>
+
+    <!-- Основни броячи: равни панели за часа и Изпит 1 -->
+    <section class="countdowns-grid primary-countdowns-grid">
+      <!-- Countdown 1: До края на часа / междучасието -->
+      <div class="card countdown-card">
+        <div class="countdown-card-header">
+          <div class="countdown-icon" title="Брояч за учебен час и междучасие">⏱️</div>
+          <div>
+            <h3 class="countdown-title">До края на часа</h3>
+            <p class="countdown-subtitle" id="periodStatusLabel">Текущ час / междучасие</p>
+          </div>
+          <span class="countdown-header-badge badge-timer" title="Показва колко минути остават до звънеца за края на часа или междучасието">⏱️ До звънеца</span>
+        </div>
+
+        <div class="countdown-number" id="periodTimerDisplay">--:--</div>
+
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="periodProgressBarFill"></div>
+        </div>
+        <div class="countdown-sub-info">
+          <span id="periodElapsedText">Изминало: --:--</span>
+          <span id="periodRemainingText">Остава: --:--</span>
+        </div>
+
+        <div class="countdown-status-name" id="periodStatusTitle">Изчисляване...</div>
+
+        <div class="countdown-card-actions">
+          <button id="restartPeriodBtn" class="btn btn-primary btn-sm full-width">
+            <span>🔄 Рестартирай часа (40 мин)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Countdown 2: До следващия изпит / контролно -->
+      <div class="card countdown-card exam-card" id="mainExamCard" data-collapsible-panel="mainExam">
+        <div class="countdown-card-header">
+          <div class="countdown-icon" title="Брояч за предстоящ изпит / контролно">📝</div>
+          <div>
+            <h3 class="countdown-title">Следващ изпит</h3>
+            <p class="countdown-subtitle" id="examTitleDisplay">Контролно по Математика</p>
+          </div>
+          <div class="card-header-right-tools">
+            <span class="countdown-header-badge badge-exam" title="Показва оставащото време до най-непосредствения предстоящ изпит">📝 Главен изпит</span>
+            <button type="button" class="btn btn-outline btn-xs card-collapse-btn" data-collapse-target="mainExam" aria-expanded="true" title="Свий или разгъни прозореца за изпита">
+              <span class="collapse-btn-label">🔽 Свий</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="countdown-number exam-number" id="examTimerDisplay">--д --ч --м</div>
+
+        <div class="collapsible-card-body">
+          <div class="exam-date-badge" id="examDateDisplay">
+            Дата на изпита: зарежда се...
+          </div>
+
+          <div class="countdown-card-actions two-btns">
+            <button id="editExamBtn" class="btn btn-outline btn-sm">
+              <span>✏️ Настрой изпит</span>
+            </button>
+            <button id="clearExamBtn" class="btn btn-outline btn-sm" type="button">
+              <span>🗑️ Изтрий изпит</span>
+            </button>
+            <button id="testExamAlertBtn" class="btn btn-warning btn-sm" title="Чуй как звучи предупреждението за контролно">
+              <span>📢 Тест аларма</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+    <section class="countdowns-grid secondary-countdowns-grid">
+      <!-- Countdown: До следващата ваканция -->
+      <div class="card countdown-card vacation-card" id="vacationCard" data-collapsible-panel="vacation">
+        <div class="countdown-card-header">
+          <div class="countdown-icon" title="Брояч за учебни ваканции">🏖️</div>
+          <div>
+            <h3 class="countdown-title">До ваканцията</h3>
+            <p class="countdown-subtitle" id="vacationTitleDisplay">Коледна ваканция</p>
+          </div>
+          <div class="card-header-right-tools">
+            <span class="countdown-header-badge badge-vacation" title="Показва оставащите дни до началото на следващата ваканция">🏖️ Ваканция</span>
+            <button type="button" class="btn btn-outline btn-xs card-collapse-btn" data-collapse-target="vacation" aria-expanded="true" title="Свий или разгъни прозореца за ваканциите">
+              <span class="collapse-btn-label">🔽 Свий</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="countdown-number vacation-number" id="vacationTimerDisplay">--д --ч --м</div>
+
+        <div class="vacation-select-wrapper collapsible-card-body">
+          <label class="form-label" for="vacationSelect">Избери ваканция:</label>
+          <select id="vacationSelect" class="form-select form-select-sm">
+            <option value="christmas" selected>🎄 Коледна ваканция (24 Декември)</option>
+            <option value="midterm">❄️ Междусрочна ваканция (5 Февруари)</option>
+            <option value="spring">🌸 Пролетна ваканция (3 Април)</option>
+            <option value="summer">☀️ Лятна ваканция (30 Юни)</option>
+          </select>
+          <div class="vacation-editor form-group">
+            <label class="form-label" for="vacationDateInput">Начало и край на ваканцията:</label>
+            <div class="form-row">
+              <input type="date" id="vacationDateInput" class="form-input" aria-label="Начало на ваканцията">
+              <input type="date" id="vacationEndDateInput" class="form-input" aria-label="Край на ваканцията">
+              <button type="button" id="saveVacationBtn" class="btn btn-outline btn-sm">Запази датата</button>
+            </div>
+          </div>
+          <div class="no-school-days form-group">
+            <h4>📅 Допълнителни неучебни дни</h4>
+            <div class="form-row">
+              <input type="date" id="noSchoolDateInput" class="form-input" aria-label="Дата на неучебния ден">
+              <input type="text" id="noSchoolDescriptionInput" class="form-input" maxlength="80" placeholder="Описание, напр. Педагогически съвет">
+              <button type="button" id="addNoSchoolDayBtn" class="btn btn-primary btn-sm">Добави</button>
+            </div>
+            <div id="noSchoolDaysList" class="no-school-days-list"></div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+    <section class="card extra-exams-section-card" id="extraExamsSectionCard" data-collapsible-panel="extraExamsSection">
+      <div class="card-title-row extra-exams-section-header">
+        <div class="extra-exams-section-title-wrap">
+          <h3 class="card-title">📝 Допълнителни изпити и контролни (Изпит 1 – 4)</h3>
+        </div>
+        <div class="card-header-right-tools">
+          <button type="button" class="btn btn-outline btn-xs card-collapse-btn" data-collapse-target="extraExamsSection" aria-expanded="true" title="Свий или разгъни всички допълнителни изпити">
+            <span class="collapse-btn-label">🔽 Свий всички</span>
+          </button>
+        </div>
+      </div>
+      <div class="countdowns-grid extra-exams-grid collapsible-card-body" id="extraExamGrid" aria-label="Допълнителни изпити">
+        <article class="card countdown-card extra-exam-card" data-extra-exam="0" data-collapsible-panel="extraExam0">
+          <div class="extra-exam-header">
+            <h3 class="countdown-title">Изпит 1</h3>
+            <div class="card-header-right-tools">
+              <span class="countdown-header-badge badge-exam" title="Допълнителен предстоящ изпит по ред на провеждане">📝 Следващ изпит</span>
+              <button type="button" class="btn btn-outline btn-xs card-collapse-btn" data-collapse-target="extraExam0" aria-expanded="true" title="Свий или разгъни Изпит 1">
+                <span class="collapse-btn-label">🔽 Свий</span>
+              </button>
+            </div>
+          </div>
+          <p class="countdown-number exam-number" id="extraExamCountdown0">Не е зададен</p>
+          <p class="exam-date-badge" id="extraExamInfo0">Добавете предмет и дата</p>
+          <div class="collapsible-card-body extra-exam-form-body">
+            <label class="form-label" for="extraExamSubject0">Предмет / описание</label>
+            <input class="form-input" id="extraExamSubject0" maxlength="80" placeholder="напр. Контролно по БЕЛ">
+            <label class="form-label" for="extraExamDate0">Дата и час</label>
+            <input class="form-input" type="datetime-local" id="extraExamDate0">
+            <div class="exam-actions"><button class="btn btn-outline btn-sm save-extra-exam" data-exam-index="0" type="button">Запази</button><button class="btn btn-danger btn-sm clear-extra-exam" data-exam-index="0" type="button">Изтрий</button></div>
+          </div>
+        </article>
+        <article class="card countdown-card extra-exam-card" data-extra-exam="1" data-collapsible-panel="extraExam1">
+          <div class="extra-exam-header">
+            <h3 class="countdown-title">Изпит 2</h3>
+            <div class="card-header-right-tools">
+              <span class="countdown-header-badge badge-exam" title="Допълнителен предстоящ изпит по ред на провеждане">📝 Следващ изпит</span>
+              <button type="button" class="btn btn-outline btn-xs card-collapse-btn" data-collapse-target="extraExam1" aria-expanded="true" title="Свий или разгъни Изпит 2">
+                <span class="collapse-btn-label">🔽 Свий</span>
+              </button>
+            </div>
+          </div>
+          <p class="countdown-number exam-number" id="extraExamCountdown1">Не е зададен</p>
+          <p class="exam-date-badge" id="extraExamInfo1">Добавете предмет и дата</p>
+          <div class="collapsible-card-body extra-exam-form-body">
+            <label class="form-label" for="extraExamSubject1">Предмет / описание</label>
+            <input class="form-input" id="extraExamSubject1" maxlength="80" placeholder="напр. Тест по история">
+            <label class="form-label" for="extraExamDate1">Дата и час</label>
+            <input class="form-input" type="datetime-local" id="extraExamDate1">
+            <div class="exam-actions"><button class="btn btn-outline btn-sm save-extra-exam" data-exam-index="1" type="button">Запази</button><button class="btn btn-danger btn-sm clear-extra-exam" data-exam-index="1" type="button">Изтрий</button></div>
+          </div>
+        </article>
+        <article class="card countdown-card extra-exam-card" data-extra-exam="2" data-collapsible-panel="extraExam2">
+          <div class="extra-exam-header">
+            <h3 class="countdown-title">Изпит 3</h3>
+            <div class="card-header-right-tools">
+              <span class="countdown-header-badge badge-exam" title="Допълнителен предстоящ изпит по ред на провеждане">📝 Следващ изпит</span>
+              <button type="button" class="btn btn-outline btn-xs card-collapse-btn" data-collapse-target="extraExam2" aria-expanded="true" title="Свий или разгъни Изпит 3">
+                <span class="collapse-btn-label">🔽 Свий</span>
+              </button>
+            </div>
+          </div>
+          <p class="countdown-number exam-number" id="extraExamCountdown2">Не е зададен</p>
+          <p class="exam-date-badge" id="extraExamInfo2">Добавете предмет и дата</p>
+          <div class="collapsible-card-body extra-exam-form-body">
+            <label class="form-label" for="extraExamSubject2">Предмет / описание</label>
+            <input class="form-input" id="extraExamSubject2" maxlength="80" placeholder="напр. Изпит по математика">
+            <label class="form-label" for="extraExamDate2">Дата и час</label>
+            <input class="form-input" type="datetime-local" id="extraExamDate2">
+            <div class="exam-actions"><button class="btn btn-outline btn-sm save-extra-exam" data-exam-index="2" type="button">Запази</button><button class="btn btn-danger btn-sm clear-extra-exam" data-exam-index="2" type="button">Изтрий</button></div>
+          </div>
+        </article>
+        <article class="card countdown-card extra-exam-card" data-extra-exam="3" data-collapsible-panel="extraExam3">
+          <div class="extra-exam-header">
+            <h3 class="countdown-title">Изпит 4</h3>
+            <div class="card-header-right-tools">
+              <span class="countdown-header-badge badge-exam" title="Допълнителен предстоящ изпит по ред на провеждане">📝 Следващ изпит</span>
+              <button type="button" class="btn btn-outline btn-xs card-collapse-btn" data-collapse-target="extraExam3" aria-expanded="true" title="Свий или разгъни Изпит 4">
+                <span class="collapse-btn-label">🔽 Свий</span>
+              </button>
+            </div>
+          </div>
+          <p class="countdown-number exam-number" id="extraExamCountdown3">Не е зададен</p>
+          <p class="exam-date-badge" id="extraExamInfo3">Добавете предмет и дата</p>
+          <div class="collapsible-card-body extra-exam-form-body">
+            <label class="form-label" for="extraExamSubject3">Предмет / описание</label>
+            <input class="form-input" id="extraExamSubject3" maxlength="80" placeholder="напр. Контролно по английски">
+            <label class="form-label" for="extraExamDate3">Дата и час</label>
+            <input class="form-input" type="datetime-local" id="extraExamDate3">
+            <div class="exam-actions"><button class="btn btn-outline btn-sm save-extra-exam" data-exam-index="3" type="button">Запази</button><button class="btn btn-danger btn-sm clear-extra-exam" data-exam-index="3" type="button">Изтрий</button></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="card shkolo-exams-card" id="shkoloExamsCard" data-collapsible-panel="allExams">
+      <div class="card-title-row">
+        <h3 class="card-title">📅 Всички изпити за учебната година</h3>
+        <div class="card-header-right-tools">
+          <span id="shkoloExamsCount" class="shkolo-exams-count">0</span>
+          <button type="button" class="btn btn-outline btn-xs card-collapse-btn" data-collapse-target="allExams" aria-expanded="true" title="Свий или разгъни списъка с всички изпити">
+            <span class="collapse-btn-label">🔽 Свий</span>
+          </button>
+        </div>
+      </div>
+      <div class="collapsible-card-body">
+        <p class="shkolo-exams-hint">Тук се показват всички синхронизирани изпити за текущата учебна година (от Shkolo и добавени ръчно). 5-те часовника по-горе отброяват само първите 5 най-близки предстоящи изпита.</p>
+        <div id="shkoloExamsList" class="shkolo-exams-list"></div>
+      </div>
+    </section>
+
+    <!-- 4. SCHEDULE SECTION WITH DAILY DROPDOWN -->
+    <section class="card schedule-main-card">
+      <div class="schedule-header-row">
+        <div class="dropdown-group weekday-tabs-wrap">
+          <label class="form-label">📅 Програма по дни:</label>
+          <div class="weekday-tabs" id="weekdayTabs" role="tablist" aria-label="Ден от седмицата">
+            <button type="button" class="weekday-tab" data-day="monday" role="tab">Понеделник</button>
+            <button type="button" class="weekday-tab" data-day="tuesday" role="tab">Вторник</button>
+            <button type="button" class="weekday-tab" data-day="wednesday" role="tab">Сряда</button>
+            <button type="button" class="weekday-tab" data-day="thursday" role="tab">Четвъртък</button>
+            <button type="button" class="weekday-tab" data-day="friday" role="tab">Петък</button>
+            <button type="button" class="weekday-tab weekday-tab-off" data-day="saturday" role="tab" disabled aria-disabled="true">Събота · почивен</button>
+            <button type="button" class="weekday-tab weekday-tab-off" data-day="sunday" role="tab" disabled aria-disabled="true">Неделя · почивен</button>
+          </div>
+          <select id="dayScheduleSelect" class="form-select day-select-highlight" aria-hidden="true" tabindex="-1" hidden>
+            <option value="monday">Понеделник (БЕЛ, Математика 📝, Английски, ИТ...)</option>
+            <option value="tuesday">Вторник (Математика, БЕЛ, Физика 📝, Химия...)</option>
+            <option value="wednesday">Сряда (Английски, БЕЛ, Математика, История 📝...)</option>
+            <option value="thursday">Четвъртък (БЕЛ, Математика, Информатика, Биология 📝...)</option>
+            <option value="friday">Петък (Математика, БЕЛ 📝, Английски, Химия...)</option>
+          </select>
+        </div>
+
+        <div class="schedule-header-actions">
+          <button id="editScheduleBtn" class="btn btn-primary btn-sm" title="Редактор на часовете и седмичната програма">
+            <span>✏️ Редактор на програмата</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="weekendScheduleNotice" class="weekend-schedule-notice" hidden>
+        <span>🌙</span>
+        <span><strong>Днес е почивен ден.</strong> Показана е програмата за следващия учебен ден — понеделник. Учебните звънци няма да звънят.</span>
+      </div>
+
+      <div class="schedule-legend-bar">
+        <span class="legend-pill class-pill" id="legendClass">Учебен час (40 мин)</span>
+        <span class="legend-pill break-pill" id="legendBreak">Малко междучасие (10 мин)</span>
+        <span class="legend-pill big-break-pill" id="legendBigBreak">☕ Голямо междучасие (20 мин)</span>
+        <span class="legend-pill exam-pill">📝 Контролно</span>
+      </div>
+
+      <div class="table-container">
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th class="col-w-50">№</th>
+              <th class="col-w-140">Вид</th>
+              <th>Предмет / Описание</th>
+              <th class="col-w-100">Начало</th>
+              <th class="col-w-100">Край</th>
+              <th class="col-w-100">Време</th>
+              <th class="col-w-110">Статус</th>
+            </tr>
+          </thead>
+          <tbody id="scheduleTableBody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Class alarms section: shared only with the selected school + class. -->
+    <section class="card alarms-card">
+      <div class="card-title-row">
+        <h3 class="card-title">⏰ Класни аларми и събития</h3>
+        <span class="profile-private-badge" title="Алармите и събитията са общи само за профилите в твоето училище и клас.">👥 За класа</span>
+      </div>
+      <p class="homework-hint">Ръчно добавените аларми и събития се виждат от всички профили в твоя клас (без домашните и изпитите, които имат свои отделни секции). Забележките остават лични. Не въвеждай лична информация, която не трябва да виждат съучениците ти.</p>
+      <form id="addAlarmForm" class="alarm-form">
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label class="form-label" for="alarmDate">Дата:</label>
+            <input type="date" id="alarmDate" class="form-input" required>
+          </div>
+          <div class="form-group flex-1">
+            <label class="form-label" for="alarmTime">Час:</label>
+            <input type="time" id="alarmTime" class="form-input" required>
+          </div>
+          <div class="form-group flex-2">
+            <label class="form-label" for="alarmLabel">Бележка:</label>
+            <input type="text" id="alarmLabel" class="form-input" placeholder="пр. Родителска среща, Екскурзия, Провери бележника..." required>
+          </div>
+          <div class="form-group flex-auto align-end">
+            <button type="submit" class="btn btn-success">➕ Добави</button>
+          </div>
+        </div>
+      </form>
+      <div id="alarmsList" class="alarms-list alarms-list-spaced"></div>
+    </section>
+
+    <section class="card homework-card">
+      <div class="card-title-row">
+        <h3 class="card-title">📚 Домашни, забележки и похвали</h3>
+        <span class="profile-private-badge" title="Всички домашни, включително от Shkolo, са общи за класа. Забележките и похвалите са лични за профила.">👥 Класни + лични</span>
+      </div>
+      <!-- Информационна легенда за малките картинки и значки -->
+      <div class="legend-card" id="appLegendCard">
+        <div class="legend-header">
+          <span class="legend-title">💡 Обяснение на картинките и значките в приложението:</span>
+        </div>
+        <div class="legend-grid">
+          <div class="legend-item" title="Домашно, синхронизирано директно от дневника Shkolo">
+            <span class="legend-badge badge-shkolo">🔒 Shkolo</span>
+            <span class="legend-text">Синхронизирано от Shkolo (само за четене, управлява се от учител)</span>
+          </div>
+          <div class="legend-item" title="Общо домашно за целия клас">
+            <span class="legend-badge badge-class">👥 Клас</span>
+            <span class="legend-text">Общо за класа (вижда се от всички съученици в твоя клас)</span>
+          </div>
+          <div class="legend-item" title="Лична похвала от учител">
+            <span class="legend-badge badge-praise">🌟 Похвала</span>
+            <span class="legend-text">Лична похвала (вижда се само в твоя личен профил)</span>
+          </div>
+          <div class="legend-item" title="Лична забележка от учител">
+            <span class="legend-badge badge-remark">📝 Забележка</span>
+            <span class="legend-text">Лична забележка (вижда се само в твоя личен профил)</span>
+          </div>
+          <div class="legend-item" title="Часовник за учебния час и междучасията">
+            <span class="legend-badge badge-timer">⏱️ До звънеца</span>
+            <span class="legend-text">Брояч за учебния час и междучасията (до звънеца)</span>
+          </div>
+          <div class="legend-item" title="Часовник за предстоящи изпити и контролни">
+            <span class="legend-badge badge-exam">📝 Главен изпит</span>
+            <span class="legend-text">Брояч за най-непосредствения предстоящ изпит</span>
+          </div>
+          <div class="legend-item" title="Часовник за ваканция">
+            <span class="legend-badge badge-vacation">🏖️ Ваканция</span>
+            <span class="legend-text">Брояч за следващата учебна ваканция</span>
+          </div>
+          <div class="legend-item" title="Бутон за автоматично синхронизиране с Shkolo">
+            <span class="legend-badge badge-sync">🔄 Shkolo</span>
+            <span class="legend-text">Фонова синхронизация с дневника (без отваряне на браузър)</span>
+          </div>
+          <div class="legend-item" title="Потребителски профил">
+            <span class="legend-badge badge-profile">👤 Профил</span>
+            <span class="legend-text">Моят профил, смяна на парола и настройки</span>
+          </div>
+        </div>
+      </div>
+      <div class="homework-tabs" role="tablist" aria-label="Домашни, забележки и похвали">
+        <button type="button" class="homework-tab active" id="homeworkTabBtn" data-homework-tab="homework" role="tab" aria-selected="true" aria-controls="homeworkPanel">📚 Домашни <span id="homeworkCount" class="homework-count">0</span></button>
+        <button type="button" class="homework-tab" id="remarksTabBtn" data-homework-tab="remarks" role="tab" aria-selected="false" aria-controls="remarksPanel" tabindex="-1">📝 Забележки <span id="remarksCount" class="homework-count">0</span></button>
+        <button type="button" class="homework-tab" id="praisesTabBtn" data-homework-tab="praises" role="tab" aria-selected="false" aria-controls="praisesPanel" tabindex="-1">🌟 Похвали <span id="praisesCount" class="homework-count">0</span></button>
+      </div>
+      <div id="homeworkPanel" class="homework-panel" role="tabpanel" aria-labelledby="homeworkTabBtn">
+        <div class="photo-upload-bar photo-upload-bar-homework">
+          <button type="button" id="homeworkCameraBtn" class="btn btn-camera" title="Отвори камерата и снимай домашно, събитие или бележка">
+            <span>📷 Снимай</span>
+          </button>
+          <button type="button" id="homeworkPhotoBtn" class="btn btn-outline" title="Избери снимка или файл с домашно или събитие">
+            <span>🖼️ Качи файл</span>
+          </button>
+          <span class="photo-upload-hint">Снимайте или качете снимка за домашно или събитие (изчиства сенките и подобрява четимостта).</span>
+        </div>
+        <input type="file" id="photoCameraInput" accept="image/*" capture="environment" hidden>
+        <input type="file" id="photoFileInput" accept="image/*" hidden>
+        <form id="addHomeworkForm" class="homework-form">
+          <div class="form-row">
+            <div class="form-group flex-1"><label class="form-label" for="homeworkTeacher">Учител</label><input class="form-input" id="homeworkTeacher" maxlength="120" placeholder="Име на учителя" required></div>
+            <div class="form-group flex-1"><label class="form-label" for="homeworkSubject">Предмет</label><input class="form-input" id="homeworkSubject" maxlength="120" placeholder="Предмет" required></div>
+            <div class="form-group flex-1"><label class="form-label" for="homeworkDueDate">Срок / дата</label><input class="form-input" type="date" id="homeworkDueDate" required></div>
+          </div>
+          <div class="form-group"><label class="form-label" for="homeworkDescription">Домашна работа / указания (до 5000 знака)</label><textarea class="form-input compact-textarea" id="homeworkDescription" rows="2" maxlength="5000" placeholder="Запишете задачите или проекта, дадени от учителя…" required></textarea><button type="button" class="text-expand-link" data-expand-target="homeworkDescription" aria-expanded="false">Разгъни полето</button></div>
+          <p class="homework-hint">Ръчно добавените тук домашни и синхронизираните от Shkolo домашни се виждат от всички профили в твоя клас.</p>
+          <button class="btn btn-primary" type="submit">Добави домашно</button>
+        </form>
+        <div id="homeworkList" class="homework-list"></div>
+      </div>
+      <div id="remarksPanel" class="homework-panel" role="tabpanel" aria-labelledby="remarksTabBtn" hidden>
+        <p class="homework-hint">Забележките от Shkolo се показват само в твоя профил. Те не се смесват с домашните и похвалите.</p>
+        <div id="remarksList" class="homework-list notes-list"></div>
+      </div>
+      <div id="praisesPanel" class="homework-panel" role="tabpanel" aria-labelledby="praisesTabBtn" hidden>
+        <p class="homework-hint">Похвалите от Shkolo се показват само в твоя профил. Те не се смесват с домашните и забележките.</p>
+        <div id="praisesList" class="homework-list notes-list praises-list"></div>
+      </div>
+    </section>
+
+    <section class="card shkolo-card" id="shkoloCard">
+      <div class="card-title-row">
+        <h3 class="card-title">🔄 Домашни, изпити, забележки и похвали от Shkolo</h3>
+        <span id="shkoloStatusBadge" class="shkolo-status">Не е свързано</span>
+      </div>
+      <p class="shkolo-intro">Свържи своя Shkolo профил веднъж. Новите домашни и предстоящи изпити ще се появяват автоматично за целия клас, а забележките и похвалите — само в твоя профил. Всеки профил може да се свърже само със своя Shkolo акаунт и не вижда данни за друг клас.</p>
+      <div id="shkoloDisconnected" class="shkolo-panel">
+        <button id="connectShkoloBtn" class="btn btn-primary" type="button">Свържи Shkolo</button>
+        <p class="shkolo-hint">Ще получиш еднократен код за връзка. Кодът е личен — пази го като парола.</p>
+      </div>
+      <div id="shkoloConnected" class="shkolo-panel" hidden>
+        <p class="shkolo-hint">Кодът за връзка се показва само веднъж. Ако го загубиш, генерирай нов и го постави отново в разширението.</p>
+        <div id="shkoloCodeBox" class="shkolo-code-box" hidden>
+          <label for="shkoloCode">Код за връзка</label>
+          <div class="shkolo-code-row">
+            <code id="shkoloCode"></code>
+            <button id="copyShkoloCodeBtn" class="btn btn-primary btn-sm" type="button">Копирай</button>
+          </div>
+        </div>
+        <p id="shkoloLastSync" class="shkolo-hint"></p>
+        <div class="shkolo-actions">
+          <button id="syncShkoloNowBtn" class="btn btn-primary btn-sm" type="button">🔄 Синхронизирай сега</button>
+          <button id="newShkoloTokenBtn" class="btn btn-outline btn-sm" type="button">Нов код</button>
+          <button id="revokeShkoloTokenBtn" class="btn btn-danger btn-sm" type="button">Изключи</button>
+        </div>
+      </div>
+      <p id="shkoloMessage" class="shkolo-message" role="status" aria-live="polite"></p>
+      <details class="shkolo-help">
+        <summary>Как да свържа Shkolo?</summary>
+        <ol>
+          <li>Изтегли <a href="shkolo-bridge.zip?v=1.5.13" download="shkolo-bridge.zip">разширението Училищен Будилник Bridge (версия 1.5.13)</a> и го разархивирай.</li>
+          <li>В Chrome или Edge отвори <code>chrome://extensions</code>, включи „Developer mode“ и натисни „Load unpacked“.</li>
+          <li>Избери папката <code>shkolo-bridge</code>.</li>
+          <li>Влез в <a href="https://app.shkolo.bg/" target="_blank" rel="noopener">Shkolo (app.shkolo.bg)</a> с твоя профил (с отметка „Запомни ме“).</li>
+          <li>Копирай кода отгоре, постави го в разширението и натисни „Запази“.</li>
+        </ol>
+        <p>Разширението използва само твоята вече отворена Shkolo сесия. Паролата ти за Shkolo не се изпраща към този сървър. По подразбиране синхронизираните домашни, учебна програма и изпити се пазят само за твоя профил (можеш да включиш споделянето с класа от разширението), а забележките и похвалите — винаги само за твоя профил. Нужна е версия 1.5.13 или по-нова.</p>
+        <div class="shkolo-guide-cta">
+          <button type="button" class="btn btn-outline btn-sm" id="shkoloHelpGuideBtn">📸 Отвори ръководството със снимки стъпка по стъпка</button>
+        </div>
+      </details>
+    </section>
+    <!-- 6. MODAL: EDIT NEXT EXAM -->
+    <div class="modal-backdrop" id="examModal">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">📝 Настройка на следващ изпит / контролно</h3>
+          <button class="modal-close" id="closeExamModalBtn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-desc">Въведете предмета и точната дата и час на контролното, за да може таймерът да отброява времето до него.</p>
+          <div class="form-group">
+            <label class="form-label" for="modalExamSubject">Предмет / Описание на изпита:</label>
+            <input type="text" id="modalExamSubject" class="form-input" placeholder="пр. Класно по БЕЛ, Контролно по Математика">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="modalExamDateTime">Дата и начален час на изпита:</label>
+            <input type="datetime-local" id="modalExamDateTime" class="form-input">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger push-left" id="clearExamModalBtn">🗑️ Изтрий изпита</button>
+          <button type="button" class="btn btn-outline" id="cancelExamModalBtn">Отказ</button>
+          <button type="button" class="btn btn-primary" id="saveExamModalBtn">💾 Запази изпита</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: EDIT SCHEDULE & PERIOD TIMES -->
+    <div class="modal-backdrop" id="scheduleEditorModal">
+      <div class="modal-dialog modal-wide">
+        <div class="modal-header">
+          <h3 class="modal-title">✏️ Редактор на часове и програма</h3>
+          <button class="modal-close" id="closeScheduleEditorBtn" title="Затвори">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-desc">
+            Избери ден, после промени началото, дължините на часовете и междучасията, броя часове
+            и предметите само за този ден. Събота и неделя са почивни и нямат учебни звънци.
+          </p>
+
+          <div class="editor-quick-settings">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="scheduleStartTime">Начало на деня</label>
+                <input type="time" id="scheduleStartTime" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="scheduleClassMinutes">Час (мин)</label>
+                <input type="number" id="scheduleClassMinutes" class="form-input" min="20" max="90" step="5" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="scheduleSmallBreak">Малко междучасие</label>
+                <input type="number" id="scheduleSmallBreak" class="form-input" min="0" max="30" step="1" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="scheduleBigBreak">Голямо междучасие</label>
+                <input type="number" id="scheduleBigBreak" class="form-input" min="0" max="60" step="5" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="scheduleBigBreakAfter">Голямо след час №</label>
+                <input type="number" id="scheduleBigBreakAfter" class="form-input" min="1" max="12" step="1" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="schedulePeriods">Брой часове</label>
+                <input type="number" id="schedulePeriods" class="form-input" min="1" max="12" step="1" required>
+              </div>
+            </div>
+          </div>
+
+          <hr class="modal-divider">
+
+          <div class="form-group">
+            <label class="form-label" for="scheduleEditorDay">Ден от седмицата</label>
+            <select id="scheduleEditorDay" class="form-select">
+              <option value="monday">Понеделник</option>
+              <option value="tuesday">Вторник</option>
+              <option value="wednesday">Сряда</option>
+              <option value="thursday">Четвъртък</option>
+              <option value="friday">Петък</option>
+            </select>
+          </div>
+
+          <div id="schedulePeriodsList" class="periods-editor-list"></div>
+
+          <div class="editor-preview" id="scheduleEditorSummary"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline push-left" id="resetScheduleEditorBtn">↩️ Стандартни стойности</button>
+          <button type="button" class="btn btn-outline" id="cancelScheduleEditorBtn">Отказ</button>
+          <button type="button" class="btn btn-primary" id="saveScheduleEditorBtn">💾 Запази програмата</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: BIG CLOCK SETTINGS -->
+    <div class="modal-backdrop" id="clockSettingsModal">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">🕒 Настройки на големия часовник</h3>
+          <button class="modal-close" id="closeClockSettingsBtn" title="Затвори">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-desc">Промени текстовете, формата и размера на часовника.</p>
+
+          <div class="form-group">
+            <label class="form-label" for="clockTitleInput">Заглавие в менюто</label>
+            <input type="text" id="clockTitleInput" class="form-input" maxlength="40" placeholder="Училищен Будилник">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="clockSubtitleInput">Подзаглавие</label>
+            <input type="text" id="clockSubtitleInput" class="form-input" maxlength="80" placeholder="1 смяна • Таймери, програма & звънец">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="clockNoteInput">Бележка под големия часовник</label>
+            <input type="text" id="clockNoteInput" class="form-input" maxlength="60" placeholder="Текущо астрономическо време">
+          </div>
+
+          <div class="checkbox-group clock-options">
+            <label class="checkbox-label">
+              <input type="checkbox" id="clockHour12">
+              <span class="checkbox-custom"></span>
+              <span>🕛 12-часов формат (AM/PM)</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="clockShowSeconds">
+              <span class="checkbox-custom"></span>
+              <span>⏱️ Показвай секундите</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="clockShowDate">
+              <span class="checkbox-custom"></span>
+              <span>📅 Показвай датата</span>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <div class="label-with-value">
+              <label class="form-label" for="clockScale">Размер на часовника</label>
+              <span id="clockScaleLabel">100%</span>
+            </div>
+            <input type="range" id="clockScale" class="form-range" min="70" max="130" step="5" value="100">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline push-left" id="resetClockSettingsBtn">↩️ Възстанови</button>
+          <button type="button" class="btn btn-outline" id="cancelClockSettingsBtn">Отказ</button>
+          <button type="button" class="btn btn-primary" id="saveClockSettingsBtn">💾 Запази</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: MY PROFILE & PASSWORD -->
+    <div class="modal-backdrop" id="profileModal">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 class="modal-title">👤 Моят профил</h3>
+          <button class="modal-close" id="closeProfileModalBtn" type="button" title="Затвори">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div id="profileIdentity" class="profile-summary"></div>
+          <p class="modal-desc">Паролата е лична. Ако я смените, използвайте новата парола при следващия вход.</p>
+          <form id="changePasswordForm" class="auth-form">
+            <label>Текуща парола<input id="currentPassword" class="form-input" type="password" autocomplete="current-password" required></label>
+            <label>Нова парола (минимум 10 символа)<input id="newPassword" class="form-input" type="password" autocomplete="new-password" required minlength="10"></label>
+            <label>Повтори новата парола<input id="confirmNewPassword" class="form-input" type="password" autocomplete="new-password" required minlength="10"></label>
+            <p id="passwordChangeMessage" class="auth-error" role="alert"></p>
+            <button class="btn btn-primary" type="submit">🔐 Смени паролата</button>
+          </form>
+          <hr class="modal-divider delete-divider">
+          <div class="delete-account-card">
+            <h4 class="delete-account-title">
+              <span>🗑️</span> Изтриване на акаунта
+            </h4>
+            <p class="modal-desc delete-account-desc">
+              Внимание: Това действие ще изтрие вашия профил и всички ваши лични данни (забележки, похвали) завинаги.
+            </p>
+            <form id="deleteAccountForm" class="auth-form delete-account-form">
+              <label class="delete-account-label">Потвърди с паролата си:
+                <input id="deleteAccountPassword" class="form-input" type="password" autocomplete="current-password" required placeholder="Въведете паролата за потвърждение">
+              </label>
+              <p id="deleteAccountMessage" class="auth-error delete-account-msg" role="alert"></p>
+              <button class="btn btn-danger delete-account-btn" type="submit">🗑️ Изтрий моя профил завинаги</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. SOUND SETTINGS: 8 SOUNDS, VOLUME & TOGGLES -->
+    <section class="card controls-card">
+      <div class="card-title-row">
+        <h3 class="card-title">🔊 Избор на мелодия на звънеца (включително MP3)</h3>
+      </div>
+
+      <div class="sound-select-row">
+        <div class="form-group flex-1">
+          <label class="form-label" for="bellToneSelect">Мелодия на звънеца:</label>
+          <select id="bellToneSelect" class="form-select">
+            <option value="classic">1. 🔔 Класически звънец</option>
+            <option value="chime">2. 🏛️ Вестминстърски гонг</option>
+            <option value="modern">3. 📱 Модерен тон</option>
+            <option value="retro">4. ⚙️ Ретро механичен звънец</option>
+            <option value="double">5. ✨ Двоен кристален звън</option>
+            <option value="ship">6. ⚓ Корабна камбана</option>
+            <option value="jingle">7. 🎵 Весел джингъл</option>
+            <option value="harp">8. 🎶 Магически арпежио</option>
+            <option value="mp3">🎧 MP3 — Soundspace</option>
+          </select>
+        </div>
+
+        <div class="form-group flex-auto align-end">
+          <button id="previewSoundBtn" class="btn btn-primary" title="Чуй избрания звънец">
+            <span>▶️ Прослушай</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Volume slider -->
+      <div class="form-group">
+        <div class="label-with-value">
+          <label class="form-label" for="volumeSlider">Сила на звука:</label>
+          <span id="volumeValueLabel">85%</span>
+        </div>
+        <input type="range" id="volumeSlider" min="0" max="100" value="85" class="form-range">
+      </div>
+
+      <!-- Checkboxes -->
+      <div class="checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="autoRingToggle" checked>
+          <span class="checkbox-custom"></span>
+          <span>🔔 Автоматичен училищен звънец (начало/край)</span>
+        </label>
+        
+        <label class="checkbox-label">
+          <input type="checkbox" id="preBellToggle" checked>
+          <span class="checkbox-custom"></span>
+          <span>🛎️ Предупредителен тон преди края на междучасието</span>
+        </label>
+
+        <label class="checkbox-label">
+          <input type="checkbox" id="vibrationToggle" checked>
+          <span class="checkbox-custom"></span>
+          <span>📳 Вибрация на телефона при звънец</span>
+        </label>
+
+        <label class="checkbox-label">
+          <input type="checkbox" id="notificationToggle">
+          <span class="checkbox-custom"></span>
+          <span>📲 Системни известия на телефона (Notifications)</span>
+        </label>
+      </div>
+    </section>
+
+    <footer class="app-footer">
+      <div class="support-footer-card">
+        <div class="support-footer-main">
+          <a href="https://revolut.me/cryptohris" target="_blank" rel="noopener noreferrer" class="btn btn-support btn-sm" data-support-block>
+            <span>☕ Подкрепи проекта / Изпрати благодарност (<strong class="nowrap">@cryptohris</strong>)</span>
+          </a>
+          <button id="footerFeedbackBtn" type="button" class="btn btn-outline btn-sm">
+            ✉️ Обратна връзка / Съобщи за грешка
+          </button>
+          <a href="mailto:schoolbell@abv.bg" class="btn btn-outline btn-sm">
+            📧 schoolbell@abv.bg
+          </a>
+        </div>
+        <p class="support-disclaimer" data-support-block>
+          Жестът на благодарност към <strong>@cryptohris</strong> (<a href="https://revolut.me/cryptohris" target="_blank" rel="noopener noreferrer">revolut.me/cryptohris</a>) е изцяло доброволен, не е плащане за услуга и не дава предимства. Приложението е безплатно и с нестопанска цел за всеки, който иска да го ползва.
+        </p>
+        <div class="footer-legal-links">
+          <a href="/privacy">Политика за поверителност</a> &bull;
+          <a href="/terms">Условия за ползване</a> &bull;
+          <a href="mailto:schoolbell@abv.bg">Контакт: schoolbell@abv.bg</a>
+        </div>
+      </div>
+      <p id="footerInfo">Училищен дигитален будилник за телефон &bull; 1 смяна (08:00 - 13:50) &bull; Всички настройки се запазват автоматично &bull; Версия 58 &middot; 16.11.2026</p>
+    </footer>
+  </div>
+
+    <!-- MODAL: PHOTO SCANNER & READABILITY STUDIO -->
+    <div class="modal-backdrop" id="photoScanModal" role="dialog" aria-modal="true" aria-labelledby="photoScanModalTitle">
+      <div class="modal-dialog modal-wide">
+        <div class="modal-header">
+          <h3 class="modal-title" id="photoScanModalTitle">📷 Качване на снимка (Домашни и Събития)</h3>
+          <button class="modal-close" id="closePhotoScanModalBtn" type="button" title="Затвори">&times;</button>
+        </div>
+        <div class="modal-body photo-scan-body">
+          <div class="photo-target-tabs" role="tablist" aria-label="Тип запис за снимката">
+            <button type="button" class="photo-target-tab active" data-photo-target="homework" role="tab" aria-selected="true">📚 Домашно</button>
+            <button type="button" class="photo-target-tab" data-photo-target="event" role="tab" aria-selected="false">📅 Събитие / Аларма</button>
+          </div>
+
+          <div class="photo-dropzone" id="photoDropzone">
+            <div class="photo-dropzone-actions">
+              <button type="button" id="modalCameraTriggerBtn" class="btn btn-camera btn-sm">📷 Снимай</button>
+              <button type="button" id="modalFileTriggerBtn" class="btn btn-outline btn-sm">🖼️ Качи снимка</button>
+            </div>
+            <p class="photo-dropzone-note">Можете да пуснете снимка тук или да поставите директно с <kbd>Ctrl+V</kbd>.</p>
+          </div>
+
+          <div id="photoEditorWorkspace" class="photo-editor-workspace" hidden>
+            <div class="photo-toolbar">
+              <div class="photo-presets" role="group" aria-label="Режим за четимост">
+                <button type="button" class="btn btn-outline btn-sm photo-preset-btn active" data-preset="document">📄 Документ (Макс. четимост)</button>
+                <button type="button" class="btn btn-outline btn-sm photo-preset-btn" data-preset="crisp">⬛ Контрастен скан (Ч/Б)</button>
+                <button type="button" class="btn btn-outline btn-sm photo-preset-btn" data-preset="color">🎨 Подобрен цвят</button>
+                <button type="button" class="btn btn-outline btn-sm photo-preset-btn" data-preset="original">🖼️ Оригинал</button>
+              </div>
+              <div class="photo-transform-actions">
+                <button type="button" id="photoRotateLeftBtn" class="btn btn-outline btn-sm" title="Завърти наляво 90°">↺ -90°</button>
+                <button type="button" id="photoRotateRightBtn" class="btn btn-outline btn-sm" title="Завърти надясно 90°">↻ +90°</button>
+                <button type="button" id="photoCompareBtn" class="btn btn-outline btn-sm" aria-pressed="false" title="Превключи между подобрената и оригиналната снимка">👁️ Оригинал</button>
+                <button type="button" id="photoZoomBtn" class="btn btn-outline btn-sm" title="Увеличи снимката за по-лесно четене">🔍 Увеличи</button>
+              </div>
+            </div>
+
+            <div class="photo-sliders">
+              <label class="photo-slider-item">
+                <span>Контраст: <strong id="photoContrastVal">135%</strong></span>
+                <input type="range" id="photoContrastSlider" min="80" max="220" step="5" value="135" class="form-range">
+              </label>
+              <label class="photo-slider-item">
+                <span>Яркост: <strong id="photoBrightnessVal">108%</strong></span>
+                <input type="range" id="photoBrightnessSlider" min="70" max="160" step="2" value="108" class="form-range">
+              </label>
+              <label class="photo-slider-item">
+                <span>Острота на буквите: <strong id="photoSharpnessVal">70%</strong></span>
+                <input type="range" id="photoSharpnessSlider" min="0" max="100" step="10" value="70" class="form-range">
+              </label>
+              <button type="button" id="photoResetAdjustBtn" class="btn btn-outline btn-sm">↩️ Авто</button>
+            </div>
+
+            <div class="photo-preview-frame" id="photoPreviewFrame">
+              <canvas id="photoEnhancedCanvas" class="photo-enhanced-canvas"></canvas>
+            </div>
+          </div>
+
+          <form id="photoSaveForm" class="photo-save-form">
+            <div class="form-row" id="photoHomeworkMetaRow">
+              <div class="form-group flex-1">
+                <label class="form-label" for="photoSubjectInput" id="photoSubjectLabel">Предмет (по избор)</label>
+                <input type="text" id="photoSubjectInput" class="form-input" maxlength="120" placeholder="напр. Математика, БЕЛ, История">
+              </div>
+              <div class="form-group flex-1" id="photoTeacherGroup">
+                <label class="form-label" for="photoTeacherInput">Учител (по избор)</label>
+                <input type="text" id="photoTeacherInput" class="form-input" maxlength="120" placeholder="Име на учителя">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label class="form-label" for="photoDateInput" id="photoDateLabel">Срок / Дата</label>
+                <input type="date" id="photoDateInput" class="form-input" required>
+              </div>
+              <div class="form-group flex-1" id="photoTimeGroup" hidden>
+                <label class="form-label" for="photoTimeInput">Час</label>
+                <input type="time" id="photoTimeInput" class="form-input" value="09:00">
+              </div>
+            </div>
+            <div class="form-group" id="photoDescriptionGroup">
+              <label class="form-label" for="photoDescriptionInput" id="photoDescriptionLabel">Бележка / Описание (по избор)</label>
+              <textarea id="photoDescriptionInput" class="form-input photo-readable-textarea" rows="2" maxlength="5000" placeholder="По желание: кратка бележка към снимката…"></textarea>
+            </div>
+            <label class="checkbox-label photo-attach-check" id="photoAttachOptionWrap">
+              <input type="checkbox" id="photoAttachCheckbox" checked>
+              <span class="checkbox-custom"></span>
+              <span>📎 Прикачи снимката към записа (вижда се от целия клас)</span>
+            </label>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="cancelPhotoScanModalBtn">Отказ</button>
+          <button type="button" class="btn btn-primary" id="savePhotoScanBtn">✅ Запази снимката</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: ENHANCED PHOTO VIEWER -->
+    <div class="modal-backdrop" id="attachmentViewerModal" role="dialog" aria-modal="true" aria-labelledby="attachmentViewerTitle">
+      <div class="modal-dialog modal-wide">
+        <div class="modal-header">
+          <h3 class="modal-title" id="attachmentViewerTitle">🖼️ Преглед на снимка (подобрена четимост)</h3>
+          <button class="modal-close" id="closeAttachmentViewerBtn" type="button" title="Затвори">&times;</button>
+        </div>
+        <div class="modal-body attachment-viewer-body">
+          <div class="attachment-viewer-controls">
+            <button type="button" id="attachmentZoomToggleBtn" class="btn btn-outline btn-sm">🔍 Увеличи / Помести</button>
+            <a id="attachmentDownloadLink" class="btn btn-outline btn-sm" download="snimka-uchebna.webp" href="#">⬇️ Изтегли</a>
+          </div>
+          <div class="attachment-viewer-stage" id="attachmentViewerStage">
+            <img id="attachmentViewerImg" alt="Подобрена снимка на домашно или събитие">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- MODAL: ABOUT & USER GUIDE (Извън #application, за да работи и без регистрация/вход!) -->
+  <div class="modal-backdrop" id="aboutModal" role="dialog" aria-modal="true" aria-labelledby="aboutModalTitle">
+    <div class="modal-dialog modal-wide">
+      <div class="modal-header">
+        <h3 class="modal-title" id="aboutModalTitle">ℹ️ Информация / Какво е „Училищен Будилник“</h3>
+        <button class="modal-close" id="closeAboutModalBtn" type="button" title="Затвори">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="about-modal-tabs" role="tablist" aria-label="Раздели на помощта">
+          <button type="button" class="about-modal-tab active" id="aboutTabBtnGuide" data-about-tab="guide" role="tab" aria-selected="true">📸 Ръководство със снимки</button>
+          <button type="button" class="about-modal-tab" id="aboutTabBtnVideo" data-about-tab="video" role="tab" aria-selected="false">🎬 Видео демонстрация</button>
+          <button type="button" class="about-modal-tab" id="aboutTabBtnOverview" data-about-tab="overview" role="tab" aria-selected="false">ℹ️ За проекта и функциите</button>
+          <button type="button" class="about-modal-tab" id="aboutTabBtnSupport" data-about-tab="support" role="tab" aria-selected="false">☕ Подкрепа и контакт</button>
+        </div>
+
+        <!-- PANEL 1: PHOTO GUIDE & STEP-BY-STEP WALKTHROUGH -->
+        <div id="aboutPanelGuide" class="about-panel" role="tabpanel" aria-labelledby="aboutTabBtnGuide">
+          <div class="guide-highlight">
+            <h4 class="guide-highlight-title">📸 Пълно визуално ръководство стъпка по стъпка</h4>
+            <p class="guide-highlight-desc">Разгледайте как работи приложението: от първоначалния вход и самостоятелните функции без Shkolo до опционалното свързване с електронния дневник и автоматичното извличане на учебната програма, контролните и домашните. Кликнете върху всяка снимка за преглед в пълен размер.</p>
+            <div class="guide-highlight-actions">
+              <button type="button" class="btn btn-outline btn-sm" id="guideWatchVideoBtn" data-about-tab="video">🎬 Гледай видео демонстрацията (2:47 мин)</button>
+            </div>
+          </div>
+
+          <div class="guide-stage-nav" role="tablist" aria-label="Етапи от ръководството">
+            <button type="button" class="guide-stage-btn active" data-guide-stage="stage-nosync" role="tab" aria-selected="true">📱 1. Регистрация и функции без Shkolo (стъпки 1–10)</button>
+            <button type="button" class="guide-stage-btn" data-guide-stage="stage-agreement" role="tab" aria-selected="false">🔑 2. Свързване с Shkolo (стъпки 11–15)</button>
+            <button type="button" class="guide-stage-btn" data-guide-stage="stage-sync" role="tab" aria-selected="false">🌟 3. Синхронизирани данни от дневника (стъпки 16–20)</button>
+          </div>
+
+          <!-- STAGE 1: NOSYNC (10 STEPS) -->
+          <div id="guideStageNoSync" class="guide-stage-panel">
+            <div class="guide-stage-note">
+              <h4 class="guide-note-title">Всички функции на „Училищен Будилник“ работят напълно самостоятелно и БЕЗ Shkolo!</h4>
+              <p class="guide-note-desc">Училищният звънец, седмичната учебна програма, таймерите за изпити, официалните неучебни дни, класните аларми и домашните работи със снимки и OCR могат да се въвеждат и управляват изцяло ръчно и се споделят с целия клас в общата класна стая. От Shkolo се извлича лична информация ЕДИНСТВЕНО за забележки и похвали, които остават строго поверителни само за вашия личен профил.</p>
+            </div>
+
+            <div class="guide-steps-list">
+              <!-- Step 1 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 1</span>
+                  <h4 class="guide-step-title">Вход с личен потребителски профил</h4>
+                </div>
+                <p class="guide-step-desc">Начален екран за вход в „Училищен Будилник“. Всеки ученик или родител въвежда своето потребителско име и парола. Защитата на профила използва сигурно scrypt криптографско хеширане. Ако все още нямате профил, изберете бутона „Нямаш профил? Регистрация“.</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-01-login.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-01-login.webp" class="guide-step-img" alt="Екран за вход в Училищен Будилник" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+
+              <!-- Step 2 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 2</span>
+                  <h4 class="guide-step-title">Избор на град, училище и паралелка</h4>
+                </div>
+                <p class="guide-step-desc">При регистрация избирате населено място, училище (от вградения списък с училища или чрез ръчно въвеждане) и съответната паралелка (например 9д клас). Всяка паралелка образува изолирана класна стая, в която съучениците споделят обща учебна програма, график на звънците, домашни и контролни.</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-02-register-school.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-02-register-school.webp" class="guide-step-img" alt="Избор на училище и клас" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+
+              <!-- Step 3 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 3</span>
+                  <h4 class="guide-step-title">Задаване на потребителско име и парола</h4>
+                </div>
+                <p class="guide-step-desc">Въвеждат се индивидуално потребителско име и надеждна парола (с минимална дължина от 10 символа). Всеки ученик има своя собствена парола. След потвърждаване профилът се създава мигновено и системата ви вписва в класната стая.</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-03-register-credentials.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-03-register-credentials.webp" class="guide-step-img" alt="Задаване на потребителско име и парола" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+
+              <!-- Step 4 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 4</span>
+                  <h4 class="guide-step-title">Голям училищен часовник, звънци и теми</h4>
+                </div>
+                <p class="guide-step-desc">Главният екран показва голям училищен часовник с точно астрономическо време, текущата учебна смяна (например 1 Смяна 08:00 – 13:50), статус „В момента тече учебен час / междучасие“ и брояч „До края на часа“. Чрез бутоните горе можете да избирате аудио звънци, мелодии и цветни фонове.</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-04-main-clock.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-04-main-clock.webp" class="guide-step-img" alt="Голям училищен часовник" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+
+              <!-- Step 5 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 5</span>
+                  <h4 class="guide-step-title">Таймери за край на часа, ваканция и следващ изпит</h4>
+                </div>
+                <p class="guide-step-desc">Таймери за обратно броене в реално време: показват точно колко минути и секунди остават до училищния звънец, брояч на оставащите дни до най-близката официална ваканция (напр. Коледна, Пролетна) и бърза настройка за дата и предмет на предстоящ изпит.</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-05-countdowns-exams.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-05-countdowns-exams.webp" class="guide-step-img" alt="Таймери за изпити и ваканции" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+
+              <!-- Step 6 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 6</span>
+                  <h4 class="guide-step-title">Официални неучебни дни, празници и ваканции</h4>
+                </div>
+                <p class="guide-step-desc">Списък с официалните неучебни дни и празници за учебната година – държавни зрелостни изпити, национално външно оценяване (НВО), неучебни дни и ваканции. Позволява на класа да въвежда и следи важните дати, за да знаят всички ученици кога училището почива.</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-06-official-holidays.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-06-official-holidays.webp" class="guide-step-img" alt="Официални неучебни дни и празници" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+
+              <!-- Step 7 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 7</span>
+                  <h4 class="guide-step-title">Аларми и таймери за следващите 4 изпита</h4>
+                </div>
+                <p class="guide-step-desc">Секция за проследяване на контролни и класни работи с индивидуални таймери и аларми за следващите 4 предстоящи изпита. Всеки ученик може да добави ръчно дата, час и предмет на контролното, което веднага става видимо за целия клас, а под тях е достъпен пълен списък на всички насрочени изпити за учебната година.</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-07-exams-countdowns.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-07-exams-countdowns.webp" class="guide-step-img" alt="Аларми и таймери за 4 изпита" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+
+              <!-- Step 8 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 8</span>
+                  <h4 class="guide-step-title">Седмична учебна програма по дни и часове</h4>
+                </div>
+                <p class="guide-step-desc">Пълна седмична учебна програма по дни (от понеделник до петък) с часове, продължителност и междучасия (малко и голямо). Включва вграден редактор на програмата, с който всяка паралелка може лесно да въведе и настрои часовете на звънеца за деня.</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-08-weekly-schedule.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-08-weekly-schedule.webp" class="guide-step-img" alt="Седмична програма по дни" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+
+              <!-- Step 9 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 9</span>
+                  <h4 class="guide-step-title">Класни аларми и събития за целия клас</h4>
+                </div>
+                <p class="guide-step-desc">Споделени класни аларми и напомняния за общи събития – родителски срещи, класни събрания, спортни събития или екскурзии. Всички въведени тук събития са общи и се виждат в реално време от всички съученици в паралелката.</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-09-class-alarms.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-09-class-alarms.webp" class="guide-step-img" alt="Класни аларми и събития" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+
+              <!-- Step 10 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 10</span>
+                  <h4 class="guide-step-title">Добавяне на домашни работи и снимки с OCR</h4>
+                </div>
+                <p class="guide-step-desc">Удобна форма за ръчно добавяне на домашни работи за класа – попълват се предмет, учител, краен срок и подробни указания (до 5000 знака). Включва бутон за прикачване на снимка от учебник или тетрадка с автоматично изчистване на сенките и подобряване на четимостта чрез вграден локален OCR. Всички добавени тук домашни се виждат веднага от целия клас.</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-10-homework-add.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-10-homework-add.webp" class="guide-step-img" alt="Добавяне на домашно и снимка с OCR" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STAGE 2: AGREEMENT / EXTENSION (5 STEPS) -->
+          <div id="guideStageAgreement" class="guide-stage-panel" hidden>
+            <div class="guide-stage-note">
+              <h4 class="guide-note-title">Свързване с Shkolo (изцяло по желание / опционално)</h4>
+              <p class="guide-note-desc">Ако използвате електронния дневник Shkolo, разширението за браузър „Училищен Будилник Bridge“ може автоматично да попълва седмичната програма, контролните и домашните работи. От Shkolo се извлича лична информация ЕДИНСТВЕНО за забележки и похвали (които остават строго поверителни само във вашия личен профил и никога не се показват на другите). Всичко останало може да се въвежда и ръчно!</p>
+            </div>
+
+            <div class="guide-steps-list">
+              <!-- Step 11 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 11</span>
+                  <h4 class="guide-step-title">Свързване с Shkolo – генериране на код в приложението</h4>
+                </div>
+                <p class="guide-step-desc">В картата „Домашни, изпити, забележки и похвали от Shkolo“ в уеб приложението натиснете бутона „Свържи Shkolo“. Генерира се личен еднократен код за връзка (токен) и се предоставя директен линк за сваляне на разширението за браузър. Ясно се посочва, че новите домашни и изпити могат да се споделят с класа, докато личните забележки и похвали остават видими единствено за вашия профил.</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-11-connect-shkolo-card.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-11-connect-shkolo-card.webp" class="guide-step-img" alt="Свързване с Shkolo от уеб приложението" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+
+              <!-- Step 12 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 12</span>
+                  <h4 class="guide-step-title">Сваляне и зареждане на разширението в браузъра (Windows, Mac, Linux)</h4>
+                </div>
+                <p class="guide-step-desc">Изтеглете архива shkolo-bridge.zip от бутона в картата за Shkolo. Инсталирането под Windows, Chrome или Edge се прави в 4 бързи стъпки:</p>
+                <ul class="guide-step-instructions">
+                  <li>Разархивираш shkolo-bridge.zip в папка на компютъра (напр. на работния плот).</li>
+                  <li>В Chrome или Edge отваряш chrome://extensions.</li>
+                  <li>Включваш превключвателя „Режим за програмисти“ (Developer mode) горе вдясно.</li>
+                  <li>Натискаш бутона „Зареждане на разархивирано“ (Load unpacked) и посочваш папката shkolo-bridge.</li>
+                </ul>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-12-extension-download.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-12-extension-download.webp" class="guide-step-img" alt="Сваляне и зареждане на разширението" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+
+              <!-- Step 13 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 13</span>
+                  <h4 class="guide-step-title">Екран за съгласие (Consent Gate) в разширението</h4>
+                </div>
+                <p class="guide-step-desc">При първо кликване върху иконата на разширението се отваря екран за информирано съгласие. Докато потребителят не натисне изрично „Съгласен съм и продължавам“, разширението не прави никакви мрежови заявки, не записва в хранилището и не чете страници от дневника.</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-13-extension-consent-gate.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-13-extension-consent-gate.webp" class="guide-step-img" alt="Екран за съгласие в разширението" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+
+              <!-- Step 14 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 14</span>
+                  <h4 class="guide-step-title">Гаранции за поверителност и бутони за избор</h4>
+                </div>
+                <p class="guide-step-desc">Подробно разяснение: пароли за Shkolo не се четат и не се предават, оценки, отсъствия, медицински бележки и лични чатове не се събират. Бутонът „Отказвам“ оставя разширението заключено. Бутонът „Съгласен съм и продължавам“ отключва полето за код за връзка.</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-14-extension-privacy-details.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-14-extension-privacy-details.webp" class="guide-step-img" alt="Подробности за поверителността" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+
+              <!-- Step 15 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 15</span>
+                  <h4 class="guide-step-title">Поставяне на кода за връзка и свързване</h4>
+                </div>
+                <p class="guide-step-desc">Поставете генерирания код от уеб приложението и натиснете „Запази“. Разширението се свързва към https://schoolbell.duckdns.org през защитена HTTPS връзка, използвайки вашата вече отворена сесия в app.shkolo.bg. По подразбиране данните остават само за вашия профил, освен ако изрично не включите отметката „Споделяй с класа“.</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-15-extension-token-connected.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-15-extension-token-connected.webp" class="guide-step-img" alt="Свързано разширение със Shkolo" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STAGE 3: SYNCED DATA (5 STEPS) -->
+          <div id="guideStageSync" class="guide-stage-panel" hidden>
+            <div class="guide-stage-note">
+              <h4 class="guide-note-title">🌟 Синхронизирани учебни данни за класа и лични отзиви</h4>
+              <p class="guide-note-desc">Максимално удобство: новите контролни, домашни и седмична програма от Shkolo спестяват време на целия клас. Личната информация (забележки и похвали от учителите) остава видима САМО във вашия личен профил.</p>
+            </div>
+
+            <div class="guide-steps-list">
+              <!-- Step 16 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 16</span>
+                  <h4 class="guide-step-title">Синхронизиран часовник и следващо контролно</h4>
+                </div>
+                <p class="guide-step-desc">След синхронизация насрочените контролни и класни работи от дневника се появяват автоматично с предмет, дата и точен начален час. Таймерът на главния часовник започва незабавно да отброява времето до контролното.</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-16-synced-clock-next-exam.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-16-synced-clock-next-exam.webp" class="guide-step-img" alt="Синхронизиран часовник и изпит" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+
+              <!-- Step 17 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 17</span>
+                  <h4 class="guide-step-title">Петте най-близки контролни и пълен график</h4>
+                </div>
+                <p class="guide-step-desc">Приложението извежда 5 отделни часовника с обратно броене за първите 5 най-близки предстоящи изпита за класа. Под тях е наличен пълен списък с всички контролни работи за учебната година, подредени хронологично.</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-17-synced-exams-countdowns.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-17-synced-exams-countdowns.webp" class="guide-step-img" alt="Броячи за 5-те най-близки контролни" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+
+              <!-- Step 18 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 18</span>
+                  <h4 class="guide-step-title">Синхронизирана дневна учебна програма</h4>
+                </div>
+                <p class="guide-step-desc">Седмичната учебна програма от дневника автоматично попълва предметите по часове (БЕЛ, Математика, География, ИИ и др.), заедно с часовете и междучасията. Системата автоматично отбелязва кой час е приключил и кой тече в момента.</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-18-synced-daily-schedule.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-18-synced-daily-schedule.webp" class="guide-step-img" alt="Синхронизирано дневно разписание" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+
+              <!-- Step 19 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 19</span>
+                  <h4 class="guide-step-title">Класни събития и разяснение на значките (легенда)</h4>
+                </div>
+                <p class="guide-step-desc">Показва класните аларми и събития заедно с пълна визуална легенда за значките: кои записи са синхронизирани от Shkolo, кои са общи за класа и кои са лични забележки и похвали (видими само за вас).</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-19-synced-alarms-legend.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-19-synced-alarms-legend.webp" class="guide-step-img" alt="Класни събития и легенда" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+
+              <!-- Step 20 -->
+              <div class="guide-step-card">
+                <div class="guide-step-header">
+                  <span class="guide-step-badge">Стъпка 20</span>
+                  <h4 class="guide-step-title">Синхронизирани домашни работи от учителите</h4>
+                </div>
+                <p class="guide-step-desc">Актуалните домашни работи, въведени от учителите в дневника, се визуализират в таб „Домашни“ с предмет, срок за предаване и точни указания. Изтеклите домашни се архивират и изчистват автоматично.</p>
+                <div class="guide-step-img-wrap" data-zoom-img="./images/guide/step-20-synced-homework-list.webp" title="Кликни за преглед">
+                  <img src="./images/guide/step-20-synced-homework-list.webp" class="guide-step-img" alt="Синхронизирани домашни от Shkolo" loading="lazy">
+                  <span class="guide-img-zoom-hint">🔍 Увеличи</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL: VIDEO WALKTHROUGH -->
+        <div id="aboutPanelVideo" class="about-panel" role="tabpanel" aria-labelledby="aboutTabBtnVideo" hidden>
+          <div class="guide-highlight">
+            <h4 class="guide-highlight-title">🎬 Пълно видео ръководство (2:47 мин)</h4>
+            <p class="guide-highlight-desc">Изгледайте кратката видео демонстрация на всички основни функции на „Училищен Будилник“: от създаването на профил за училище и клас до автоматичното синхронизиране с Shkolo.</p>
+            <div class="guide-video-actions">
+              <a href="https://youtu.be/kJFhI1hQjjA" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">▶️ Отвори в YouTube</a>
+              <a href="https://schoolbell.duckdns.org/video.mp4" target="_blank" rel="noopener noreferrer" download="schoolbell-walkthrough.mp4" class="btn btn-outline btn-sm">⬇️ Изтегли видео файла (MP4)</a>
+            </div>
+          </div>
+
+          <div class="guide-video-wrapper">
+            <iframe class="guide-video-frame" src="https://www.youtube-nocookie.com/embed/kJFhI1hQjjA" title="Видео демонстрация на Училищен Будилник" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+          </div>
+
+          <div class="guide-stage-note">
+            <h4 class="guide-note-title">Какво се показва във видеото стъпка по стъпка:</h4>
+            <div class="video-timeline-list">
+              <div class="video-timeline-item">
+                <span class="video-time-badge">0:00 – 0:35</span>
+                <div class="video-time-content">
+                  <h5 class="video-time-title">1. Регистрация и избор на училище и клас</h5>
+                  <p class="video-time-desc">Избират се училище (напр. ПТГ), клас (9) и паралелка (г). Всички ученици от една и съща паралелка споделят обща стая за програмата, без да се смесват с други класове.</p>
+                </div>
+              </div>
+
+              <div class="video-timeline-item">
+                <span class="video-time-badge">0:36 – 1:05</span>
+                <div class="video-time-content">
+                  <h5 class="video-time-title">2. Училищен часовник и брояч за учебните часове</h5>
+                  <p class="video-time-desc">Показва се големият цифров училищен часовник с отброяване в реално време на текущия час (40 мин.), малките и големите междучасия и бутонът за рестартиране на часа.</p>
+                </div>
+              </div>
+
+              <div class="video-timeline-item">
+                <span class="video-time-badge">1:06 – 1:35</span>
+                <div class="video-time-content">
+                  <h5 class="video-time-title">3. Обратно броене до ваканции и официални неучебни дни</h5>
+                  <p class="video-time-desc">Табло за обратно броене до следващата ваканция (напр. Междусрочна), пълен календар на официалните неучебни дни в България и възможност за добавяне на извънредни почивни дни за класа.</p>
+                </div>
+              </div>
+
+              <div class="video-timeline-item">
+                <span class="video-time-badge">1:36 – 2:05</span>
+                <div class="video-time-content">
+                  <h5 class="video-time-title">4. Седмична програма, класни аларми и изпити</h5>
+                  <p class="video-time-desc">Седмичното разписание по часове (1–7 час) с автоматичен индикатор за текущия час и аларми с обратно броене за следващите контролни и изпити.</p>
+                </div>
+              </div>
+
+              <div class="video-timeline-item">
+                <span class="video-time-badge">2:06 – 2:47</span>
+                <div class="video-time-content">
+                  <h5 class="video-time-title">5. Свързване с електронния дневник Shkolo</h5>
+                  <p class="video-time-desc">Генериране на еднократен токен за връзка в уеб приложението, зареждане на разширението „Училищен Будилник Bridge“ в браузъра и защитено синхронизиране на програмата и домашните.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 2: OVERVIEW & FEATURES -->
+        <div id="aboutPanelOverview" class="about-panel" role="tabpanel" aria-labelledby="aboutTabBtnOverview" hidden>
+          <div class="guide-highlight">
+            <strong>Училищен Будилник</strong> (<a href="https://schoolbell.duckdns.org">schoolbell.duckdns.org</a>) е <strong>безплатно училищно приложение с нестопанска цел</strong> за ученици, родители и училищни класове. Приложението съчетава училищен звънец в реално време, седмична учебна програма, обратно броене до изпити и ваканции, класни аларми, прикачване на снимки с локален OCR и опционална фонова синхронизация с електронния дневник <strong>Shkolo (v1.5.13)</strong>.
+          </div>
+
+          <div class="guide-stage-note">
+            <h4 class="guide-note-title">Важно за самостоятелната работа:</h4>
+            <p class="guide-note-desc">Всички функции на „Училищен Будилник“ работят напълно самостоятелно и БЕЗ Shkolo! Седмичната учебна програма, звънците за часовете, контролните и изпитите, официалните неучебни дни, класните аларми и домашните работи могат да се попълват изцяло ръчно и се споделят с целия клас в общата класна стая.</p>
+            <p class="guide-note-desc">Връзката със Shkolo е изцяло по желание (опционална): от дневника се извлича лична информация ЕДИНСТВЕНО за забележки и похвали (които остават строго поверителни само във вашия личен профил и не се споделят с класа).</p>
+          </div>
+
+          <div class="guide-section">
+            <h4 class="guide-section-title">🎯 За кого е и как се използва накратко?</h4>
+            <div class="guide-grid">
+              <div class="guide-card">
+                <div class="guide-card-title">🆓 Безплатно и достъпно за всеки</div>
+                <p>Проектът е некомерсиален, без реклами и без платени функции. Всяко училище и паралелка имат своя изолирана стая за общо разписание, а информацията за проекта е достъпна веднага без регистрация.</p>
+              </div>
+              <div class="guide-card">
+                <div class="guide-card-title">⏰ Училищен звънец и таймери</div>
+                <p>Показва текущия час или междучасие и отброява на живо оставащото време до следващия звънец. Звукът на звънеца може да се пуска или заглушава с бутона за аудио.</p>
+              </div>
+              <div class="guide-card">
+                <div class="guide-card-title">📅 Седмична учебна програма и изпити</div>
+                <p>Интерактивна програма по дни (понеделник – петък) с вграден <strong>Редактор на програмата</strong> и табло с точно обратно броене до 5-те най-близки предстоящи контролни, тестове и ваканции.</p>
+              </div>
+              <div class="guide-card">
+                <div class="guide-card-title">📚 Домашни, забележки и похвали</div>
+                <p>Следене на предстоящите домашни работи (общи за паралелката), както и лични похвали и забележки от учителите (видими единствено в индивидуалния профил).</p>
+              </div>
+              <div class="guide-card">
+                <div class="guide-card-title">📷 Снимки и локален OCR</div>
+                <p>Възможност за прикачване на снимки към домашни и напомняния. Снимките се съхраняват в изолирана папка с права 0600 на сървъра, а текстът се разчита напълно локално с tesseract без изпращане на трети страни.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-section">
+            <h4 class="guide-section-title">🔄 Как работи връзката със Shkolo (по желание)?</h4>
+            <div class="guide-card">
+              <p>Към приложението има безплатно браузърно разширение <strong>„Училищен Будилник Bridge“ (v1.5.13)</strong> (за Chrome, Edge и Brave), което синхронизира във фонов режим:</p>
+              <ul class="guide-list">
+                <li><strong>Без парола за Shkolo:</strong> Разширението не чете и не копира бисквитките ви и не ги изпраща към Училищен Будилник. Заявките към Shkolo се изпращат от вашия браузър с вашата сесия, както когато сами отваряте Shkolo, и бисквитките отиват само към Shkolo. Паролата ви за Shkolo не се чете и не се съхранява.</li>
+                <li><strong>Какво се синхронизира:</strong> Само предстоящи домашни работи, предстоящи контролни/изпити, седмична учебна програма и забележки/похвали. Оценки, отсъствия, медицински бележки и лични чатове не се събират.</li>
+                <li><strong>Строг контрол и поверителност:</strong> По подразбиране (shareWithClass = false) данните се запазват само за вашия личен профил. Само при изрично включване домашните, изпитите и седмичната програма се споделят с класа. Забележките и похвалите винаги остават строго лични.</li>
+                <li><strong>Неофициален инструмент:</strong> Проектът е независим и не е свързан със или одобрен от Shkolo (Школо ООД) или конкретно училище.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 3: SUPPORT & CONTACT -->
+        <div id="aboutPanelSupport" class="about-panel" role="tabpanel" aria-labelledby="aboutTabBtnSupport" hidden>
+          <div class="guide-section">
+            <h4 class="guide-section-title">☕ Подкрепа, обратна връзка и правни документи</h4>
+            <div class="guide-grid">
+              <div class="guide-card" data-support-block>
+                <div class="guide-card-title">☕ Подкрепи проекта / Изпрати благодарност</div>
+                <p>Ако приложението ви е полезно, можете да изпратите доброволен жест на благодарност в Revolut към <strong>@cryptohris</strong>:</p>
+                <p class="guide-cta">
+                  <a href="https://revolut.me/cryptohris" target="_blank" rel="noopener noreferrer" class="btn btn-support btn-sm" data-support-block>☕ Изпрати благодарност (@cryptohris)</a>
+                </p>
+                <p class="guide-note">Жестът на благодарност е изцяло доброволен, не е плащане за услуга, не подлежи на връщане и не дава никакви предимства или специални функции.</p>
+              </div>
+              <div class="guide-card">
+                <div class="guide-card-title">✉️ Контакт, бъгове и поверителност</div>
+                <p>За въпроси, предложения, съобняване за грешки или упражняване на права по GDPR:</p>
+                <ul class="guide-list">
+                  <li>Имейл: <a href="mailto:schoolbell@abv.bg"><strong>schoolbell@abv.bg</strong></a></li>
+                  <li><button type="button" id="aboutOpenFeedbackBtn" class="btn btn-outline btn-sm guide-feedback-btn">✉️ Отвори формата за обратна връзка</button></li>
+                  <li><a href="/privacy">Политика за поверителност</a> &bull; <a href="/terms">Условия за ползване</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="https://revolut.me/cryptohris" target="_blank" rel="noopener noreferrer" class="btn btn-support btn-sm push-left" data-support-block>☕ Изпрати благодарност (@cryptohris)</a>
+        <a href="mailto:schoolbell@abv.bg" class="btn btn-outline btn-sm">📧 schoolbell@abv.bg</a>
+        <button type="button" class="btn btn-primary btn-sm" id="closeAboutModalFooterBtn">Разбрах</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: FEEDBACK / REPORT A BUG (Извън #application, работи и без вход) -->
+  <div class="modal-backdrop" id="feedbackModal" role="dialog" aria-modal="true" aria-labelledby="feedbackModalTitle">
+    <div class="modal-dialog modal-compact">
+      <div class="modal-header">
+        <h3 class="modal-title" id="feedbackModalTitle">✉️ Обратна връзка / Съобщи за грешка</h3>
+        <button class="modal-close" id="closeFeedbackModalBtn" type="button" title="Затвори">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">
+          Изпратете съобщение директно през формата по-долу или ни пишете на
+          <a href="mailto:schoolbell@abv.bg?subject=%D0%A3%D1%87%D0%B8%D0%BB%D0%B8%D1%89%D0%B5%D0%BD%20%D0%91%D1%83%D0%B4%D0%B8%D0%BB%D0%BD%D0%B8%D0%BA%20-%20%D0%9E%D0%B1%D1%80%D0%B0%D1%82%D0%BD%D0%B0%20%D0%B2%D1%80%D1%8A%D0%B7%D0%BA%D0%B0"><strong>schoolbell@abv.bg</strong></a>, ако желаете отговор по имейл.
+        </p>
+        <form id="feedbackForm" class="auth-form">
+          <div class="form-group">
+            <label class="form-label" for="feedbackType">Тип съобщение</label>
+            <select id="feedbackType" class="form-select" required>
+              <option value="bug">🐞 Съобщение за грешка (бъг)</option>
+              <option value="feature">💡 Предложение за подобрение</option>
+              <option value="question">❓ Въпрос</option>
+              <option value="other">📝 Друго</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="feedbackMessage">Съобщение (поне 5 символа)</label>
+            <textarea id="feedbackMessage" class="form-input compact-textarea" rows="2" minlength="5" maxlength="1500" required placeholder="Опишете забелязаната грешка или вашето предложение…"></textarea>
+            <button type="button" class="text-expand-link" data-expand-target="feedbackMessage" aria-expanded="false">Разгъни полето</button>
+          </div>
+          <p id="feedbackStatusMsg" class="auth-error" role="status"></p>
+          <div class="modal-footer modal-footer-inline">
+            <a href="mailto:schoolbell@abv.bg" class="btn btn-outline btn-sm push-left">📧 schoolbell@abv.bg</a>
+            <button type="button" class="btn btn-outline btn-sm" id="cancelFeedbackModalBtn">Отказ</button>
+            <button type="submit" class="btn btn-primary btn-sm" id="submitFeedbackBtn">Изпрати</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifications Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="audio.js?v=25"></script>
+  <script src="varna-schools.js?v=25"></script>
+  <script src="class-calendars.js?v=58"></script>
+  <script src="app.js?v=58"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+{
+  "manifest_version": 3,
+  "name": "Училищен Будилник Bridge",
+  "version": "1.5.13",
+  "description": "Синхронизира домашни, забележки, изпити и седмична програма от Shkolo с приложението Училищен Будилник. Не съхранява паролата ви.",
+  "minimum_chrome_version": "116",
+  "homepage_url": "https://schoolbell.duckdns.org/",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none';"
+  },
+  "permissions": ["alarms", "offscreen", "storage"],
+  "host_permissions": [
+    "https://app.shkolo.bg/*",
+    "https://schoolbell.duckdns.org/*"
+  ],
+  "background": { "service_worker": "background.js" },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Училищен Будилник Bridge",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://app.shkolo.bg/*"],
+      "js": ["page-capture.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://app.shkolo.bg/*"],
+      "js": ["extractor.js", "content.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["https://schoolbell.duckdns.org/*"],
+      "js": ["app-bridge.js"],
+      "run_at": "document_start"
+    }
+  ]
+}

@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Условия за ползване · Училищен Будилник</title>
+  <style>
+    :root {
+      color-scheme: dark light;
+      --bg: #0d1420;
+      --card: #152033;
+      --border: #2a3a52;
+      --text: #eef4ff;
+      --muted: #a6b8d0;
+      --accent: #38b27b;
+      --code-bg: #0b111b;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f4f7fb;
+        --card: #ffffff;
+        --border: #d5e0ee;
+        --text: #162235;
+        --muted: #4a5d79;
+        --accent: #18794e;
+        --code-bg: #edf2f8;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 32px 16px 64px;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, .2);
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+    h1 { margin-top: 0; font-size: 26px; line-height: 1.3; }
+    h2 { margin-top: 28px; font-size: 19px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+    .meta { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+    ul { padding-left: 22px; }
+    li { margin: 6px 0; }
+    code {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    a { color: var(--accent); }
+    .callout {
+      background: rgba(56, 178, 123, .1);
+      border-left: 4px solid var(--accent);
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin: 18px 0;
+    }
+    .support-box {
+      margin-top: 28px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--code-bg);
+      text-align: center;
+    }
+    .btn-support {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      max-width: 100%;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--accent);
+      background: rgba(56, 178, 123, .15);
+      color: var(--text);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .btn-support:hover {
+      background: rgba(56, 178, 123, .26);
+    }
+    .disclaimer-small {
+      margin: 10px 0 0 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    hr { border: 0; border-top: 1px solid var(--border); margin: 40px 0; }
+    .lang-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--code-bg);
+      font-size: 14px;
+    }
+    .lang-bar a {
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .lang-bar a:hover {
+      text-decoration: underline;
+    }
+    .lang-en {
+      display: none;
+    }
+    body:has(#en:target) .lang-bg,
+    html[lang="en"] .lang-bg {
+      display: none;
+    }
+    body:has(#en:target) .lang-en,
+    html[lang="en"] .lang-en {
+      display: block;
+    }
+    @media (max-width: 600px) {
+      .container { padding: 20px 16px; }
+      h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <div id="bg" class="lang-pane lang-bg">
+    <nav class="lang-bar" aria-label="Език и навигация">
+      <a href="#bg" data-set-lang="bg">🇧🇬 Български</a>
+      <span>·</span>
+      <a href="#en" data-set-lang="en">🇬🇧 English</a>
+      <span>·</span>
+      <a href="/privacy">Политика за поверителност</a>
+      <span>·</span>
+      <a href="/?lang=bg">← Училищен Будилник</a>
+    </nav>
+    <h1>Условия за ползване — „Училищен Будилник“</h1>
+    <p class="meta">
+      Версия на документа: <strong>Версия 2.3</strong> ·
+      Последна актуализация: <strong>15 ноември 2026 г.</strong> ·
+      Разширение: <strong>v1.5.13</strong> ·
+      Уебсайт: <a href="https://schoolbell.duckdns.org/">https://schoolbell.duckdns.org/</a> ·
+      Контакт: <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a>
+    </p>
+
+    <div class="callout">
+      <strong>Кратко резюме:</strong> „Училищен Будилник“ е напълно безплатен, доброволен проект с нестопанска цел за ученици, учители и родители. Предоставя се „както е“ (as-is) без търговска дейност, без реклами и без платени абонаменти.
+    </div>
+
+    <h2>1. Информация за оператора и характер на проекта</h2>
+    <p>
+      Уеб приложението „Училищен Будилник“ (<a href="https://schoolbell.duckdns.org/">https://schoolbell.duckdns.org</a>) и прилежащото разширение за браузър „Училищен Будилник Bridge“ се разработват и поддържат от <strong>физическо лице с нестопанска цел</strong>, без осъществяване на търговска дейност.
+    </p>
+    <ul>
+      <li><strong>Имейл за връзка, въпроси, сигнали за грешки и поверителност:</strong> <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a></li>
+      <li><strong>Достъпност:</strong> Приложението е безплатно за всеки, който желае да го използва.</li>
+    </ul>
+
+    <h2>2. Описание на услугата и неофициален статут</h2>
+    <p>
+      Приложението предоставя училищен часовник с таймери за учебни часове и междучасия, звуков звънец, обратни броячи за изпити и ваканции, споделена програма по класове и опционална синхронизация на домашни работи, изпити и бележки чрез Chrome разширението „Училищен Будилник Bridge“.
+    </p>
+    <ul>
+      <li><strong>Независим проект:</strong> „Училищен Будилник“ и „Училищен Будилник Bridge“ <strong>не са официален продукт</strong> на никое училище, Министерството на образованието и науката (МОН) или на платформата Shkolo (Школо ООД), нито са одобрени или поддържани от тях.</li>
+      <li><strong>Риск за профила в Shkolo и отговорност на потребителя:</strong> Разширението „Училищен Будилник Bridge“ е неофициален инструмент без споразумение с „Школо“ ООД. Автоматизираното четене на данни може да противоречи на Общите условия на Shkolo, поради което Shkolo може да ограничи или прекрати профила ви. Инструментът се използва изцяло на собствен риск и отговорност на потребителя.</li>
+      <li><strong>Предоставяне „както е“ (as is / as available):</strong> Услугата се предоставя „както е“ и „както е налична“, без изрични или подразбиращи се гаранции за непрекъсната работа, липса на грешки, точност на учебното разписание или звънеца, или пригодност за конкретна цел.</li>
+      <li>При промяна в структурата на страниците на Shkolo автоматичната синхронизация през разширението може временно да бъде прекъсната или ограничена.</li>
+    </ul>
+
+    <h2>3. Профили, споделени класни стаи и отговорност на потребителя</h2>
+    <ul>
+      <li>Информация за приложението („За приложението“) и формата за обратна връзка са достъпни свободно без вход и без регистрация.</li>
+      <li>За синхронизиране на програмата по паралелки и за опционалната връзка със Shkolo се създава профил в приложението (потребителско име, парола от минимум 10 символа, училище и клас).</li>
+      <li>Ръчно въведените за класа данни (учебно разписание, ваканции, класни аларми, ръчни изпити и домашни) са общи за съответната паралелка (класна стая). При синхронизация от Shkolo чрез разширението опцията „Споделяй с класа“ (<code>shareWithClass</code>) е <strong>изключена по подразбиране</strong> (синхронизираните домашни, изпити и седмична програма остават само в личния профил, освен ако потребителят изрично не включи споделянето), докато забележките и похвалите от Shkolo винаги се съхраняват изолирано само в личния профил на потребителя.</li>
+      <li>Личният код за връзка (токен <code>SB1...</code>) с Chrome разширението е предназначен единствено за вашия профил — не го споделяйте с трети лица. Можете да го смените или да изтриете профила си по всяко време от меню „Моят профил“.</li>
+      <li>Потребителят се задължава да не въвежда незаконно, обидно или злонамерено съдържание в споделените полета на класа и във формата за обратна връзка.</li>
+    </ul>
+
+    <h2>4. Ограничаване на отговорността</h2>
+    <p>
+      <strong>В максималната степен, позволена от приложимото законодателство</strong>, авторът и оператор на „Училищен Будилник“ не носи отговорност за:
+    </p>
+    <ul>
+      <li>преки, косвени, случайни или последващи вреди, произтичащи от използването или невъзможността за използване на приложението или разширението;</li>
+      <li>пропуснати звънци, звукови сигнали, аларми или известия (включително при заспал екран, изключен звук на устройството или ограничения на мобилния браузър);</li>
+      <li>неточности в учебната програма, разписанието на смените, датите на ваканциите и изпитите, или загуба на въведени данни;</li>
+      <li>решения или действия на ученици, родители или учители, предприети въз основа на показаната в приложението информация.</li>
+    </ul>
+    <p>
+      Училищният будилник е помощен ориентир и не замества официалния училищен звънец, официалните заповеди на училището или официалния електронен дневник.
+      <strong>Нищо в настоящите Условия за ползване няма за цел да изключи или ограничи права на потребителите, които не могат да бъдат изключени или ограничени по силата на императивни норми на приложимото българско или европейско право.</strong>
+    </p>
+
+    <h2>5. Доброволен жест на благодарност / подарък (Revolut)</h2>
+    <p>
+      В приложението и документацията е поставен ненатрапчив бутон/връзка <strong>„Подкрепи проекта / Изпрати благодарност“</strong>, водещ към <a href="https://revolut.me/cryptohris" target="_blank" rel="noopener noreferrer">https://revolut.me/cryptohris</a> (Revolut потребител: <code>@cryptohris</code>).
+    </p>
+    <ul>
+      <li><strong>Напълно доброволен жест:</strong> Изпращането на сума е изцяло доброволен личен жест на благодарност (подарък) за подкрепа на свободното време и разходите по поддръжка на проекта.</li>
+      <li><strong>Не е плащане за услуга:</strong> Жестът на благодарност (подаръкът) не представлява покупка, такса, абонамент или възнаграждение за услуга и <strong>не поражда никакви договорни права, предимства, допълнителни функции, приоритетна поддръжка или гаранции</strong>. Приложението е еднакво и напълно безплатно за всички.</li>
+      <li><strong>Възстановяване и обработка:</strong> Доброволните жестове на благодарност не подлежат на възстановяване от страна на автора. Преводът се извършва извън приложението и се обработва изцяло от <strong>Revolut</strong> съгласно собствените Условия за ползване и Политика за поверителност на Revolut. „Училищен Будилник“ няма вградено плащане и не събира, не вижда и не съхранява банкови карти или платежни данни.</li>
+    </ul>
+
+    <h2>6. Прекратяване и автоматично изтриване</h2>
+    <ul>
+      <li>Всеки потребител може да прекрати ползването на услугата по всяко време и да изтрие профила си незабавно от бутона „👤 Моят профил“ → „Изтрий моя профил завинаги“.</li>
+      <li>Неактивни профили (без вход в продължение на 12 месеца) се изтриват автоматично от сървъра.</li>
+    </ul>
+
+    <h2>7. Поверителност и лични данни</h2>
+    <p>При първо отваряне на popup-а разширението показва разкриване за данните от Shkolo и изисква изрично съгласие. Преди съгласие то не чете или парсва отговори от Shkolo и не изпраща данни. След съгласие и запазване на кода за връзка първата синхронизация започва веднага; по-нататък синхронизирайте ръчно със „Синхронизирай сега“ или автоматично (най-много веднъж на час без паралелни заявки), ако сте включили отделната опция (изключена по подразбиране). При HTTP 403/429 от Shkolo синхронизацията спира незабавно без повторения в цикъл. Съгласието може да се оттегли по всяко време от popup-а: ако има запазен код за връзка, разширението първо извиква <code>DELETE /api/shkolo/data</code> на сървъра (трие синхронизираните лични Shkolo забележки/похвали, несподелените лични Shkolo домашни/изпити и кода за връзка), след което спира алармите и offscreen документа и изчиства локалните данни (<code>chrome.storage.local</code>). На сървъра остават вашият уеб профил и вече споделените с класа данни (когато има други потребители в същия клас); за пълно изтриване на профила използвайте „👤 Моят профил“ → „Изтрий моя профил завинаги“ в приложението.</p>
+    <p>Разширението не чете и не копира бисквитките ви и не ги изпраща към Училищен Будилник. Заявките към Shkolo се изпращат от вашия браузър с вашата вече отворена сесия, както когато сами отваряте Shkolo, и бисквитките отиват само към Shkolo.</p>
+    <p>Подробности за събраните данни, ограниченото им използване, срока на съхранение и изтриването на акаунт са в <a href="/privacy#delete-account">Политиката за поверителност</a>.</p>
+    <p>
+      Видовете обработвани данни, сроковете за съхранение и вашите права по Общия регламент относно защитата на данните (GDPR) са описани подробно в нашата <a href="/privacy">Политика за поверителност</a>.
+    </p>
+
+    <h2>8. Промени в условията и контакт</h2>
+    <p>
+      При промяна в функционалността на приложението настоящите условия могат да бъдат актуализирани, като най-горе се посочват новата версия и датата на последна актуализация. За въпроси, сигнали за грешки или обратна връзка пишете на <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a>.
+    </p>
+
+    <div class="support-box">
+      <a class="btn-support" href="https://revolut.me/cryptohris" target="_blank" rel="noopener noreferrer">
+        ☕ Подкрепи проекта · <code>@cryptohris</code>
+      </a>
+      <p class="disclaimer-small">
+        Жестът на благодарност е напълно доброволен, не е плащане за услуга и не дава предимства. Плащанията се обработват външно от Revolut.
+      </p>
+      <p class="disclaimer-small">
+        <a href="https://schoolbell.duckdns.org/?lang=bg">← Към Училищен Будилник</a> ·
+        <a href="/privacy">Политика за поверителност</a> ·
+        <a href="#en" data-set-lang="en">🇬🇧 English</a> ·
+        <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a>
+      </p>
+    </div>
+    </div>
+
+    <div id="en" class="lang-pane lang-en" lang="en">
+    <nav class="lang-bar" aria-label="Language and navigation">
+      <a href="#bg" data-set-lang="bg">🇧🇬 Български</a>
+      <span>·</span>
+      <a href="#en" data-set-lang="en">🇬🇧 English</a>
+      <span>·</span>
+      <a href="/privacy#en">Privacy Policy</a>
+      <span>·</span>
+      <a href="/?lang=en">← Back to School Bell</a>
+    </nav>
+
+    <h1>Terms of Service — “School Bell”</h1>
+    <p class="meta">
+      Document version: <strong>Version 2.3</strong> ·
+      Last updated: <strong>November 15, 2026</strong> ·
+      Extension: <strong>v1.5.13</strong> ·
+      Website: <a href="https://schoolbell.duckdns.org/?lang=en">https://schoolbell.duckdns.org/</a> ·
+      Contact: <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a>
+    </p>
+
+    <div class="callout">
+      <strong>Quick Summary:</strong> “School Bell” is a completely free, volunteer, non-profit educational project for students, parents, and teachers. It is provided “as is” with no commercial activity, no advertisements, and no paid subscriptions.
+    </div>
+
+    <h2>1. Operator Information &amp; Nature of the Project</h2>
+    <p>
+      The “School Bell” web application (<a href="https://schoolbell.duckdns.org/?lang=en">https://schoolbell.duckdns.org</a>) and the companion browser extension “School Bell Bridge” are developed and maintained by an <strong>individual developer on a non-profit basis</strong>, with no commercial activity.
+    </p>
+    <ul>
+      <li><strong>Contact email for questions, bug reports, and privacy/GDPR inquiries:</strong> <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a></li>
+      <li><strong>Availability:</strong> The application is free of charge for anyone who wishes to use it.</li>
+    </ul>
+
+    <h2>2. Service Description &amp; Unofficial Status</h2>
+    <p>
+      The application provides a live school bell clock with class and break timers, audio bell chimes, exam and vacation countdowns, a class timetable, and optional synchronization of homework, control tests/exams, weekly schedule, and student remarks/praises via the Chrome extension “School Bell Bridge”.
+    </p>
+    <ul>
+      <li><strong>Independent Project:</strong> “School Bell” and “School Bell Bridge” are <strong>not an official product</strong> of any school, the Bulgarian Ministry of Education and Science, or Shkolo (Shkolo Ltd.), nor are they endorsed or maintained by them.</li>
+      <li><strong>Shkolo Account Risk &amp; User Responsibility:</strong> The “School Bell Bridge” extension is an unofficial tool with no agreement with Shkolo Ltd. Automated reading of diary data may conflict with Shkolo’s Terms of Service, and Shkolo may restrict or suspend your account. The tool is used entirely at the user’s own risk and responsibility.</li>
+      <li><strong>Provided “As Is” / “As Available”:</strong> The service is provided “as is” and “as available” without express or implied warranties of uninterrupted operation, error-free performance, schedule accuracy, or fitness for a particular purpose.</li>
+      <li>Changes to the structure of Shkolo’s pages may temporarily interrupt or limit synchronization through the extension.</li>
+    </ul>
+
+    <h2>3. Accounts, Class Rooms &amp; User Responsibilities</h2>
+    <ul>
+      <li>Information about the application (“About”) and the feedback form are freely accessible without signing in or registering.</li>
+      <li>To synchronize class timetables and optionally connect the Shkolo extension, users create an account in the web application (username, password of at least 10 characters, school, and class).</li>
+      <li>Manually entered class schedule items, vacations, class alarms, manual exams, and manual homework are shared within the selected class room (school + class). For Shkolo-synced data via the extension, <strong>“Share with class” (<code>shareWithClass</code>) is OFF by default</strong> (keeping synced homework, exams, and weekly timetable private to your own account unless you explicitly enable class sharing), while student remarks and praises from Shkolo are always stored strictly privately in the linking user’s profile.</li>
+      <li>Your personal connection code (Bearer token <code>SB1...</code>) for the Chrome extension is strictly for your own account—do not share it with third parties. You can rotate/revoke it or delete your profile at any time from the “👤 My Profile” menu.</li>
+      <li>Users agree not to submit unlawful, abusive, or malicious content in shared class fields or the feedback form.</li>
+    </ul>
+
+    <h2>4. Limitation of Liability</h2>
+    <p>
+      <strong>To the maximum extent permitted by applicable law</strong>, the author and operator of “School Bell” shall not be liable for:
+    </p>
+    <ul>
+      <li>direct, indirect, incidental, or consequential damages arising from the use or inability to use the application or extension;</li>
+      <li>missed bells, audio chimes, alarms, or notifications (including when a device screen is asleep, muted, or restricted by mobile browser power-saving policies);</li>
+      <li>inaccuracies in the class timetable, shift times, vacation or exam dates, or loss of entered data;</li>
+      <li>decisions or actions taken by students, parents, or teachers based on the information displayed in the application.</li>
+    </ul>
+    <p>
+      School Bell is a supplementary helper and does not replace the official school bell, official school notices, or the official electronic diary.
+      <strong>Nothing in these Terms of Service is intended to exclude or limit consumer rights that cannot be excluded or limited under mandatory provisions of applicable Bulgarian or European Union law.</strong>
+    </p>
+
+    <h2>5. Voluntary Tip / Appreciation Gesture (Revolut)</h2>
+    <p>
+      The web application and documentation include an optional link <strong>“Support the project / Send thanks”</strong> pointing to <a href="https://revolut.me/cryptohris" target="_blank" rel="noopener noreferrer">https://revolut.me/cryptohris</a> (Revolut username: <code>@cryptohris</code>; disabled in the Chrome extension popup).
+    </p>
+    <ul>
+      <li><strong>Entirely Voluntary:</strong> Sending any amount is a purely voluntary personal gesture of appreciation (gift) supporting maintenance time and server costs.</li>
+      <li><strong>Not a Payment for Service:</strong> A voluntary tip does not constitute a purchase, fee, subscription, or payment for service and <strong>grants no contractual rights, advantages, extra features, priority support, or warranties</strong>. The application is identical and 100% free for everyone.</li>
+      <li><strong>Non-Refundable &amp; External Processing:</strong> Voluntary tips are non-refundable by the author. Transfers take place outside the application and are processed entirely by <strong>Revolut</strong> under Revolut’s own Terms and Privacy Policy. “School Bell” has no built-in payment processing and never collects, views, or stores bank card or payment details.</li>
+    </ul>
+
+    <h2>6. Termination &amp; Automatic Deletion</h2>
+    <ul>
+      <li>Any user may stop using the service at any time and delete their account immediately via “👤 My Profile” → “Delete my account forever”.</li>
+      <li>Inactive accounts (with no login for 12 months) are automatically deleted from the server.</li>
+    </ul>
+
+    <h2>7. Privacy &amp; Personal Data</h2>
+    <p>On first opening the extension popup, a clear data disclosure is shown and explicit consent is required (Consent Gate). Before consent is granted, the extension does not read or parse Shkolo responses and sends no network requests. After consent and saving a connection token, the initial sync runs; thereafter sync is manual (“Sync now”) or hourly in the background (at most once per hour with no parallel requests) only if explicitly enabled by the user (off by default). On HTTP 403/429 from Shkolo, synchronization stops immediately without retry loops. Consent can be withdrawn at any time from the popup: if a connection token is stored, the extension first sends <code>DELETE /api/shkolo/data</code> to the server (erasing synced personal Shkolo remarks/praises, unshared personal Shkolo homework/exams, and the token binding) before stopping alarms/offscreen tasks and clearing <code>chrome.storage.local</code>. For full server account deletion, use “👤 My Profile” → “Delete my account forever” in the web app.</p>
+    <p>The extension does not read or copy your Shkolo cookies and does not send them to School Bell. Requests to Shkolo are made locally by your browser using your already-opened session, and cookies go only to Shkolo.</p>
+    <p>Full details on processed data, Limited Use compliance, retention periods, and GDPR rights are provided in our <a href="/privacy#en">Privacy Policy</a>.</p>
+
+    <h2>8. Changes to These Terms &amp; Contact</h2>
+    <p>
+      If application features change, these Terms may be updated with the new version number and update date shown at the top. For questions, bug reports, or feedback, email <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a>.
+    </p>
+
+    <div class="support-box">
+      <a class="btn-support" href="https://revolut.me/cryptohris" target="_blank" rel="noopener noreferrer">
+        ☕ Support the Project · <code>@cryptohris</code>
+      </a>
+      <p class="disclaimer-small">
+        Voluntary tips are not payments for service and grant no special features. Processed externally by Revolut.
+      </p>
+      <p class="disclaimer-small">
+        <a href="https://schoolbell.duckdns.org/?lang=en">← Back to School Bell</a> ·
+        <a href="/privacy#en">Privacy Policy</a> ·
+        <a href="#bg" data-set-lang="bg">🇧🇬 Български</a> ·
+        <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a>
+      </p>
+    </div>
+    </div>
+  </main>
+  <script src="app.js?v=57"></script>
+</body>
+</html>

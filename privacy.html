@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Политика за поверителност · Училищен Будилник &amp; Shkolo Bridge</title>
+  <style>
+    :root {
+      color-scheme: dark light;
+      --bg: #0d1420;
+      --card: #152033;
+      --border: #2a3a52;
+      --text: #eef4ff;
+      --muted: #a6b8d0;
+      --accent: #38b27b;
+      --code-bg: #0b111b;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f4f7fb;
+        --card: #ffffff;
+        --border: #d5e0ee;
+        --text: #162235;
+        --muted: #4a5d79;
+        --accent: #18794e;
+        --code-bg: #edf2f8;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 32px 16px 64px;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, .2);
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+    h1 { margin-top: 0; font-size: 26px; line-height: 1.3; }
+    h2 { margin-top: 28px; font-size: 19px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+    p, li { color: var(--text); }
+    .meta { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+    .notice {
+      background: rgba(56, 178, 123, .1);
+      border-left: 4px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin: 18px 0;
+    }
+    code {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    hr { border: 0; border-top: 1px solid var(--border); margin: 40px 0; }
+    a { color: var(--accent); }
+    .support-box {
+      margin-top: 28px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--code-bg);
+      text-align: center;
+    }
+    .btn-support {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      max-width: 100%;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--accent);
+      background: rgba(56, 178, 123, .15);
+      color: var(--text);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .btn-support:hover {
+      background: rgba(56, 178, 123, .26);
+    }
+    .disclaimer-small {
+      margin: 10px 0 0 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .lang-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--code-bg);
+      font-size: 14px;
+    }
+    .lang-bar a {
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .lang-bar a:hover {
+      text-decoration: underline;
+    }
+    .lang-en { display: none; }
+    body:has(#en:target) .lang-bg,
+    html[lang="en"] .lang-bg { display: none; }
+    body:has(#en:target) .lang-en,
+    html[lang="en"] .lang-en { display: block; }
+    @media (max-width: 600px) {
+      .container { padding: 20px 16px; }
+      h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <div id="bg" class="lang-pane lang-bg">
+    <nav class="lang-bar" aria-label="Език и навигация">
+      <strong>🇧🇬 Български</strong>
+      <span>·</span>
+      <a href="#en" data-set-lang="en">🇬🇧 English</a>
+      <span>·</span>
+      <a href="/terms">Условия за ползване</a>
+      <span>·</span>
+      <a href="/?lang=bg">← Обратно към Училищен Будилник</a>
+    </nav>
+    <h1>Политика за поверителност<br><small>Училищен Будилник &amp; разширение „Училищен Будилник Bridge“</small></h1>
+    <p class="meta">
+      Версия на документа: <strong>Версия 2.5</strong> ·
+      Последна актуализация: <strong>15 ноември 2026 г.</strong> ·
+      Разширение: <strong>v1.5.13</strong> ·
+      Адрес: <a href="https://schoolbell.duckdns.org/privacy">https://schoolbell.duckdns.org/privacy</a> ·
+      Контакт: <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a>
+    </p>
+
+    <div class="notice">
+      <strong>Кратко резюме:</strong> „Училищен Будилник“ е безплатен, доброволен проект с нестопанска цел. Разширението „Училищен Будилник Bridge“ не чете и не копира бисквитките ви и не ги изпраща към Училищен Будилник. Заявките към Shkolo се изпращат от браузъра ви с вашата сесия и бисквитките отиват само към Shkolo. Паролата за Shkolo не се чете и не се съхранява. Обработват се единствено данните за профила/класа в приложението и (при свързано разширение) предстоящи домашни, предстоящи изпити (подредени хронологично от най-близкия), седмичната учебна програма и забележки/похвали за ученика от вече влезлия ви профил в <code>app.shkolo.bg</code> към <code>https://schoolbell.duckdns.org</code>. Не е свързано със и не е одобрено от Shkolo.
+    </div>
+
+    <h2>0. Администратор на лични данни</h2>
+    <p>
+      Уеб приложението „Училищен Будилник“ (<a href="https://schoolbell.duckdns.org/">https://schoolbell.duckdns.org</a>) и браузърното разширение „Училищен Будилник Bridge“ се поддържат от <strong>физическо лице с нестопанска цел</strong>, без осъществяване на търговска дейност.
+    </p>
+    <ul>
+      <li><strong>Имейл за контакт по въпроси за поверителност, права по GDPR и сигнали за грешки:</strong> <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a></li>
+      <li><strong>Условия за ползване:</strong> <a href="/terms">https://schoolbell.duckdns.org/terms</a></li>
+    </ul>
+
+    <h2>1. Какви данни се събират и обработват</h2>
+    <p class="notice">
+      <strong>Важно за самостоятелната работа:</strong> Всички функции на уеб приложението „Училищен Будилник“ (училищен часовник, звънци, седмична програма, контролни и изпити, официални неучебни дни и ваканции, класни аларми и домашни работи със снимки и OCR) могат да работят напълно самостоятелно <strong>БЕЗ Shkolo</strong>. Всички учебни записи могат да бъдат въвеждани ръчно и са видими за целия клас в класната стая. Свързването с електронния дневник Shkolo е изцяло по желание (опционално), като от дневника се извлича лична информация <em>ЕДИНСТВЕНО за индивидуални забележки и похвали</em> (които остават строго поверителни само във вашия личен профил и не се споделят с класа).
+    </p>
+    <p>В зависимост от това кои функции на <a href="https://schoolbell.duckdns.org/">Училищен Будилник</a> използвате, се обработват следните категории данни:</p>
+    <ul>
+      <li><strong>Профил и класна стая в уеб приложението:</strong> избрано потребителско име (3–40 символа), криптографски хеш на паролата (<code>scrypt</code> със случайна сол — паролата в чист вид никога не се записва), избрано училище и клас/паралелка (напр. <code>7а</code>), както и въведените за класа учебно разписание, смени, ваканции и изпити.</li>
+      <li><strong>Данни при свързване на разширението „Училищен Будилник Bridge“ (вкл. данни за непълнолетно лице):</strong>
+        <ul>
+          <li><em>Учебен контекст:</em> вътрешен идентификатор на ученика в Shkolo (<code>pupilId</code>), идентификатор на паралелка (<code>classYearId</code>), име на класа и идентификатор/име на училището (<code>schoolId</code>, <code>schoolName</code>).</li>
+          <li><em>Забележки и похвали за ученика (комуникация от учители и инцидентен здравен контекст):</em> вид отзив (забележка или похвала), предмет, име на учител, дата, час, категория/значка и свободен текст на коментара от учителя. Тъй като свободният текст от учител представлява текстова бележка към родител/ученик и инцидентно може да съдържа поведенческа или здравна/обстоятелствена информация (въпреки че официалните медицински бележки, отсъствията и частните чатове НЕ се четат), в декларацията за данните на Chrome Web Store превантивно са отметнати <em>Health information</em> и <em>Personal communications</em> (Опция а). Тези записи се съхраняват <strong>строго поверително само в личния профил</strong>, който е свързал разширението, и никога не са видими за други потребители в същия клас.</li>
+          <li><em>Предстоящи домашни работи, контролни/изпити за учебната година и седмична учебна програма:</em> учебен предмет, име на учител, описание на домашното или заглавие на контролното, краен срок / дата и час на провеждане (подредени хронологично), седмична програма по дни и часове и вътрешен идентификатор. Изтекли домашни и записи без срок не се събират. <strong>Споделяне в класа:</strong> по подразбиране опцията е <strong>изключена (<code>shareWithClass = false</code>)</strong> — тези домашни, изпити и седмичната учебна програма остават <strong>само за вашия личен профил</strong>; единствено ако изрично включите отметката в разширението, те се споделят с избраната класна стая (училище и паралелка) и са видими за останалите потребители от същия клас в Училищен Будилник.</li>
+          <li><em>Токен за удостоверяване:</em> личният код за връзка (<code>Bearer token SB1...</code>), генериран от потребителя в Училищен Будилник (на сървъра се пази неговият <code>SHA-256</code> хеш).</li>
+        </ul>
+      </li>
+      <li><strong>Прикачени снимки и оптично разпознаване на текст (OCR):</strong>
+        <ul>
+          <li><em>Какво се качва:</em> Потребителите могат доброволно да качват снимки като прикачени файлове към напомняния (събития/аларми) и ръчни домашни работи. Поддържат се формати PNG, JPEG/JPG и WebP (до 4 MB тяло на заявката / 3 MB за OCR сканиране и до 750 KB / 500 KB за прикачен файл).</li>
+          <li><em>Съхранение на сървъра в изолирана папка с права 0600:</em> Прикачените снимки се съхраняват на нашия сървър в изолирана поддиректория за конкретната класна стая (<code>data/attachments/&lt;хеш-на-стая&gt;/</code>). Папката се създава с режим <code>0700</code>, а всеки файл на изображение се записва със защитени права <code>0600</code>. Достъпът до снимките през <code>/api/attachments/:id</code> се предоставя само на влезли потребители от същата класна стая (потребители от други паралелки или училища получават 404/401).</li>
+          <li><em>Локален OCR със tesseract без трети страни:</em> Разпознаването на текст (OCR) през <code>/api/ocr/scan</code> се извършва <strong>напълно локално на нашия собствен сървър</strong> чрез системния инструмент <code>tesseract</code> (езици български и английски: <code>bul+eng</code>). При сканиране се създава временен файл с права <code>0600</code> в системната временна директория, който се изтрива автоматично и гарантирано веднага след обработката (в блок <code>finally</code>). <strong>Никакви снимки или разпознати текстове не се изпращат на трети страни, външни облачни доставчици или външни AI услуги.</strong></li>
+          <li><em>Срок на пазене и изтриване:</em> Снимките се пазят само докато съответното домашно или аларма е активно. Несвързани (осиротели) снимки се изчистват автоматично. При изтриване на домашното прикаченият файл се изтрива от диска. При изтриване на профила през „Изтрий моя профил завинаги“ (<code>/api/auth/delete-account</code>), когато изтриваният потребител е последният в класа, цялата директория с прикачени файлове на стаята се изтрива окончателно от диска.</li>
+        </ul>
+      </li>
+      <li><strong>Бисквитки (Cookies) и локално съхранение (<code>localStorage</code> / <code>chrome.storage.local</code>):</strong>
+        <ul>
+          <li><code>school_bell_session</code> — функционална сесийна бисквитка за вход в уеб приложението (<code>HttpOnly</code>, <code>SameSite=Lax</code>, <code>Secure</code> през HTTPS, валидност до 7 дни).</li>
+          <li><code>__Host-sb_admin</code> / <code>sb_admin_session</code> — техническа сесийна бисквитка само за администратора на системата (<code>HttpOnly</code>, <code>SameSite=Strict</code>, 15 минути при неактивност / до 8 часа максимум).</li>
+          <li><code>localStorage</code> в браузъра — запазва избраната цветова тема, сила на звука, мащаб на часовника и локален кеш на програмата за работа при прекъсната връзка.</li>
+          <li><code>chrome.storage.local</code> в разширението — преди съгласие се чете само записът за съгласие; след приемане се съхранява записът <code>{ consent, version, at }</code>, токенът за връзка, настройката <code>autoSync</code> (изключена по подразбиране), ученическият контекст и ключовете на вече синхронизираните записи.</li>
+        </ul>
+      </li>
+      <li><strong>Технически логове и форма за обратна връзка (<code>POST /api/feedback</code>):</strong>
+        <ul>
+          <li>IP адрес и време на заявката в сървърни логове за защита от злоупотреби, брутфорс атаки и ограничаване на честотата на заявките (rate-limiting), съхранявани до <strong>30 дни</strong>.</li>
+          <li>Доброволно изпратени съобщения чрез формата „Обратна връзка / Съобщи за грешка“ (вид сигнал и текст на съобщението — формата не събира имейл; при желание за отговор се ползва директната връзка <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a>), съхранявани до <strong>12 месеца</strong>.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <p>Разширението не чете и не копира бисквитките ви и не ги изпраща към Училищен Будилник. Заявките към Shkolo се изпращат локално от вашия браузър с вашата вече отворена сесия по ваша изрична инициатива, както когато сами отваряте Shkolo, и бисквитките отиват само към Shkolo. Сървърът на Училищен Будилник не осъществява директен или масов автоматизиран достъп до Shkolo.</p>
+
+    <h2>2. Какви данни НЕ се събират</h2>
+    <ul>
+      <li>Пароли или потребителски имена за вход в Shkolo;</li>
+      <li>Оценки, отсъствия и официални медицински бележки (модулът за медицински бележки не се чете);</li>
+      <li>Лични чатове/съобщения в модула за комуникация на Shkolo, ЕГН, телефонни номера или домашни адреси;</li>
+      <li>Банкови карти или платежни данни;</li>
+      <li>История на браузъра извън позволените пътища на дневника в <code>https://app.shkolo.bg/</code> (<code>/diary/</code>, <code>/ajax/diary/</code>, <code>/pupil/</code>).</li>
+    </ul>
+
+    <h2>3. Цел и правно основание за обработката</h2>
+    <p>
+      Данните се обработват единствено за функционирането на приложението „Училищен Будилник“ — показване на часовете, звънеца, предстоящите домашни и контролни за класа, показване на личните забележки и похвали в профила на потребителя и осигуряване на техническата сигурност на сървъра (чл. 6, пар. 1, б. „а“, „б“ и „е“ от GDPR — съгласие на потребителя при свързване на разширението/изпращане на обратна връзка, предоставяне на поисканата от потребителя функционалност и легитимен интерес за информационна сигурност без търговски цели). Автоматичната почасова синхронизация във фонов режим е <strong>изключена по подразбиране</strong> и се активира само при изричен избор на потребителя.
+    </p>
+
+    <h2>Ограничено използване на данните</h2>
+    <p>Използването на информацията, получена от Shkolo чрез това разширение, отговаря на политиката за потребителски данни на Chrome Web Store (Chrome Web Store User Data Policy), включително изискванията за ограничено използване (Limited Use requirements). Информацията, получена от Shkolo чрез разширението, се ползва само за единствената цел на разширението: да показва домашни, забележки, похвали, предстоящи изпити и седмичната учебна програма в Училищен Будилник. По подразбиране (<code>shareWithClass = false</code>) синхронизираните данни остават лични само за свързания профил; единствено при изрично включване на отметката домашните, изпитите (предмет, учител, описание/заглавие и дата/час) и седмичната учебна програма стават видими за другите потребители от същия клас в Училищен Будилник, докато забележките и похвалите винаги остават строго лични само за свързания профил. Не се продават и не се предоставят данни на външни организации или трети страни за техни собствени цели, за реклама, кредитна оценка или несвързани цели. Хора нямат достъп до съдържанието на данните, освен със съгласие на потребителя, по съображения за сигурност, за спазване на закона или в обобщен анонимен вид. Oracle Cloud Infrastructure осигурява единствено хостинг инфраструктурата.</p>
+    <p>При първо ползване на разширението потребителят дава съгласие чрез разкриването в popup-а. Съгласието може да бъде оттеглено по всяко време от popup-а; при наличен токен разширението първо изпраща <code>DELETE /api/shkolo/data</code> към сървъра, след което изтрива локалните данни и спира фоновите задачи. Автоматичната почасова синхронизация се изпълнява най-много веднъж на час без паралелни заявки и спира незабавно при HTTP 403/429.</p>
+    <p><strong>Сигурност:</strong> Връзките са по HTTPS. Достъпът до базата е ограничен. Резервните копия са криптирани с AES-256 и достъпът до тях е ограничен. Дисковете на сървъра (boot volumes) са криптирани в покой чрез Oracle Cloud Infrastructure Block Volume encryption с ключове, управлявани от Oracle.</p>
+
+    <h2>4. Къде се пазят данните и срокове на съхранение</h2>
+    <ul>
+      <li><strong>Локално в браузъра (<code>localStorage</code> и <code>chrome.storage.local</code>):</strong> до изчистване на данните на сайта, премахване на разширението от <code>chrome://extensions</code> или смяна на кода за връзка.</li>
+      <li><strong>На сървъра на Училищен Будилник (<code>https://schoolbell.duckdns.org</code>):</strong>
+        <ul>
+          <li><em>Домашни работи:</em> съхраняват се само докато са предстоящи и се <strong>изтриват автоматично</strong> след изтичане на крайния им срок.</li>
+          <li><em>Контролни и изпити от Shkolo:</em> показват се за <strong>текущата учебна година</strong> (от 1 септември), като 5-те часовника с обратно броене отброяват само 5-те най-близки предстоящи изпита; записи от предходни учебни години се <strong>изтриват автоматично</strong>.</li>
+          <li><em>Забележки и похвали:</em> съхраняват се в личния профил на потребителя до прекъсване на връзката с Shkolo или изтриване на профила.</li>
+          <li><em>Неактивни акаунти и обратна връзка:</em> акаунти (заедно с всички техни данни) и съобщения от обратна връзка, които са неактивни над <strong>12 месеца</strong>, се изтриват автоматично при периодичната сървърна поддръжка.</li>
+          <li><em>Сървърни логове за сигурност (с IP адреси, в <code>data/logs/</code>):</em> съхраняват се до <strong>30 дни</strong>, след което се изтриват автоматично.</li>
+          <li><em>Системни резервни копия (бекъпи в <code>data/backups/</code> с права <code>0600</code>):</em> криптирани са с AES-256-GCM, достъпът до тях е ограничен и се пазят с ротация до <strong>14 дни</strong>; нужен е таен ключ в променливата на средата <code>BACKUP_ENCRYPTION_KEY</code>.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2>4а. Административен достъп и защита на личните данни</h2>
+    <p>За техническа поддръжка, предотвратяване на злоупотреби и изпълнение на заявки по GDPR администраторът разполага със защитен с двуфакторна автентикация (TOTP) административен панел, който прилага принципа за минимален достъп:</p>
+    <ul>
+      <li><strong>Обобщена статистика:</strong> общ брой акаунти, брой синхронизации и грешки по дни, разпределение по версии на разширението и техническо състояние на сървъра.</li>
+      <li><strong>Таблица с регистрираните акаунти (видими полета):</strong>
+        <ul>
+          <li>Регистрирано потребителско име (Име);</li>
+          <li>Училище;</li>
+          <li>Клас / паралелка;</li>
+          <li>Дата на регистрация;</li>
+          <li>Време на последна синхронизация;</li>
+          <li>Статус (на синхронизацията / блокиран) и версия на разширението;</li>
+          <li>Вътрешен псевдонимен идентификатор за административни действия: блокиране, анулиране на токен, GDPR експорт/изтриване.</li>
+        </ul>
+      </li>
+      <li><strong>Какво администраторът НЕ вижда:</strong> административният панел <strong>НЕ предоставя достъп</strong> до съдържанието на домашните работи, забележките, похвалите, изпитите, идентификаторите или имената на учениците и учителите от Shkolo, нито до паролите и токените за връзка.</li>
+    </ul>
+
+    <h2>5. Деца и непълнолетни лица (училищна среда)</h2>
+    <p>
+      Приложението е създадено за училищна среда (ученици, родители и учители). За работата на будилника и програмата се използват само общи учебни данни за паралелката (училище, клас, разписание на часовете, предстоящи домашни и контролни). При свързване със Shkolo се обработват единствено учебният контекст (<code>pupilId</code>, клас, училище) и бележките от дневника, които остават изолирани в личния профил. Ако потребителят е ученик под 14-годишна възраст, създаването на профил и свързването на разширението следва да се извършват със знанието и съгласието на родител или настойник. Родител или настойник може по всяко време да поиска незабавно изтриване на профил и свързани данни на <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a>.
+    </p>
+
+    <h2>6. Хостинг, трети страни, Revolut и декларации за Chrome Web Store</h2>
+    <ul>
+      <li><strong>Хостинг и сигурност:</strong> Връзките са по HTTPS. Достъпът до базата е ограничен. Резервните копия са криптирани с AES-256 и достъпът до тях е ограничен. Дисковете на сървъра (boot volumes) са криптирани в покой чрез Oracle Cloud Infrastructure Block Volume encryption с ключове, управлявани от Oracle. Сървърът използва инфраструктура на Oracle Cloud Infrastructure и DNS от DuckDNS.</li>
+      <li><strong>Външна връзка за доброволна подкрепа (Revolut):</strong> В приложението има обикновена външна хипервръзка (<a href="https://revolut.me/cryptohris" target="_blank" rel="noopener noreferrer">https://revolut.me/cryptohris</a>, <code>@cryptohris</code>) за доброволен жест на благодарност (подарък). В приложението няма вградени скриптове на Revolut и не се обменят данни с Revolut, освен ако сами не изберете да последвате връзката, при което обработката се извършва от Revolut съгласно тяхната собствена политика за поверителност.</li>
+      <li><strong>Декларации за Chrome Web Store:</strong>
+        <ul>
+          <li>Ние <strong>не продаваме</strong> и не прехвърляме потребителски данни на трети страни, рекламни мрежи или брокери на данни.</li>
+          <li>Ние <strong>не използваме</strong> потребителски данни за цели, несвързани с единствената цел на приложението и разширението.</li>
+          <li>Ние <strong>не използваме</strong> потребителски данни за определяне на кредитоспособност или за отпускане на заеми.</li>
+          <li>Не използваме рекламни скриптове, проследяващи пиксели или аналитични услуги на трети страни.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2 id="delete-account">7. Вашите права по GDPR и как да ги упражните</h2>
+    <p>Съгласно Общия регламент относно защитата на данните (Регламент (ЕС) 2016/679 / GDPR) имате следните права:</p>
+    <ul>
+      <li><strong>Право на достъп</strong> до данните, свързани с вашия профил;</li>
+      <li><strong>Право на коригиране</strong> на неточни данни (можете да редактирате данните за програмата и паролата си директно в приложението);</li>
+      <li><strong>Право на изтриване („право да бъдеш забравен“)</strong> —
+        <ul>
+          <li><em>Оттегляне на съгласието от popup-а:</em> ако има запазен код за връзка, разширението първо извиква <code>DELETE /api/shkolo/data</code> (при грешка показва ясно съобщение) и после спира фоновите задачи и изчиства <code>chrome.storage.local</code>. <strong>Изтрива:</strong> локалните данни/токена в браузъра, всички синхронизирани Shkolo забележки и похвали, личните несподелени Shkolo домашни/изпити и кода/връзката със Shkolo на сървъра (и споделените Shkolo домашни/изпити на класа само ако сте били последният свързан Shkolo потребител в класа). <strong>Остава на сървъра:</strong> вашият уеб профил (потребителско име, хеш на паролата, ръчни бележки) и домашните, изпитите и учебната програма, споделени с класа, докато в класа има други потребители.</li>
+          <li><em>Пълно сървърно изтриване на профила:</em> в <a href="https://schoolbell.duckdns.org/">https://schoolbell.duckdns.org/</a> → „👤 Моят профил“ → „Изтрий моя профил завинаги“ (или на <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a>) премахвате целия профил и личните данни (и класната стая, ако няма други потребители в същия клас).</li>
+        </ul>
+      </li>
+      <li><strong>Право на ограничаване на обработването, преносимост на данните и възражение</strong> срещу обработването;</li>
+      <li><strong>Право на оттегляне на съгласието</strong> по всяко време чрез бутона в popup-а „Оттегли съгласието и изтрий данните“. Деинсталирането на разширението от <code>chrome://extensions</code> чисти единствено локалното хранилище в браузъра (не може автоматично да извести сървъра).</li>
+    </ul>
+    <p>
+      <strong>Как се упражняват правата и срок за отговор:</strong> Изпратете искане в свободен текст до <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a> (като посочите потребителското си име в приложението). Администраторът разглежда и отговаря на искането без ненужно забавяне и <strong>в срок до 1 месец</strong> от получаването му съгласно чл. 12, пар. 3 от GDPR.
+    </p>
+    <p>
+      <strong>Право на жалба до надзорен орган:</strong> Ако считате, че правата ви за защита на личните данни са нарушени, имате право да подадете жалба до <strong>Комисията за защита на личните данни (КЗЛД)</strong> на Република България — гр. София 1592, бул. „Проф. Цветан Лазаров“ № 2, уебсайт: <a href="https://www.cpdp.bg" target="_blank" rel="noopener noreferrer">https://www.cpdp.bg</a>, имейл: <code>kzld@cpdp.bg</code>.
+    </p>
+
+    <h2>8. Контакт</h2>
+    <p>
+      За въпроси относно поверителността, защита на личните данни или сигнали за грешки:<br>
+      Имейл: <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a><br>
+      Уебсайт: <a href="https://schoolbell.duckdns.org/">https://schoolbell.duckdns.org/</a> ·
+      Условия за ползване: <a href="/terms">https://schoolbell.duckdns.org/terms</a>
+    </p>
+
+    <div class="support-box">
+      <a class="btn-support" href="https://revolut.me/cryptohris" target="_blank" rel="noopener noreferrer">
+        ☕ Подкрепи проекта · <code>@cryptohris</code>
+      </a>
+      <p class="disclaimer-small">
+        Жестът на благодарност е напълно доброволен, не е плащане за услуга и не дава предимства. Обработва се външно от Revolut.
+      </p>
+      <p class="disclaimer-small">
+        <a href="/?lang=bg">← Към Училищен Будилник</a> ·
+        <a href="/terms">Условия за ползване</a> ·
+        <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a>
+      </p>
+    </div>
+    </div>
+
+    <div id="en" class="lang-pane lang-en">
+    <nav class="lang-bar" aria-label="Language and navigation">
+      <a href="#bg" data-set-lang="bg">🇧🇬 Български</a>
+      <span>·</span>
+      <strong>🇬🇧 English</strong>
+      <span>·</span>
+      <a href="/terms#en">Terms of Service</a>
+      <span>·</span>
+      <a href="/?lang=en">← Back to School Bell</a>
+    </nav>
+    <h1>Privacy Policy<br><small>School Bell &amp; “School Bell Bridge” Chrome Extension</small></h1>
+    <p class="meta">
+      Document version: <strong>Version 2.5</strong> ·
+      Last updated: <strong>November 15, 2026</strong> ·
+      Extension: <strong>v1.5.13</strong> ·
+      URL: <a href="https://schoolbell.duckdns.org/privacy#en">https://schoolbell.duckdns.org/privacy#en</a> ·
+      Contact: <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a>
+    </p>
+
+    <div class="notice">
+      <strong>Quick Summary:</strong> “School Bell” is a free, volunteer, non-profit educational project. The “School Bell Bridge” extension does not read or copy your Shkolo cookies and does not send them to School Bell. Requests to Shkolo are sent locally by your browser using your already-open session, and cookies go only to Shkolo. Your Shkolo password is never read or stored. Only your app profile/class data and (when the extension is connected with your explicit consent) upcoming homework, upcoming scheduled exams, weekly class timetable, and student remarks/praises from your logged-in <code>app.shkolo.bg</code> profile are processed at <code>https://schoolbell.duckdns.org</code>. Independent and not affiliated with or endorsed by Shkolo.
+    </div>
+
+    <h2>0. Data Controller</h2>
+    <p>
+      The “School Bell” web application (<a href="https://schoolbell.duckdns.org/?lang=en">https://schoolbell.duckdns.org</a>) and the “School Bell Bridge” browser extension are maintained by an <strong>individual developer on a non-profit basis</strong>, with no commercial activity.
+    </p>
+    <ul>
+      <li><strong>Contact email for privacy, GDPR rights, and bug reports:</strong> <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a></li>
+      <li><strong>Terms of Service:</strong> <a href="/terms#en">https://schoolbell.duckdns.org/terms#en</a></li>
+    </ul>
+
+    <h2>1. Categories of Data Processed</h2>
+    <p class="notice">
+      <strong>Important Standalone Operation Note:</strong> All features of the “School Bell” web application (school clock, ringtone bells, weekly timetable, exams, official non-attendance days/vacations, class alarms, and homework with photos and local OCR) function completely standalone <strong>WITHOUT Shkolo</strong>. All records can be entered manually and shared with classmates in the class room. Connecting with the Shkolo electronic diary via the extension is entirely optional; from Shkolo, private personal data is collected <em>ONLY for individual student remarks and praises</em> (which remain strictly private to the linking account and are never shared with classmates).
+    </p>
+    <ul>
+      <li><strong>Web Application Profile &amp; Class Room:</strong> chosen username (3–40 characters), cryptographic password hash (<code>scrypt</code> with random salt — plaintext passwords are never stored), selected school and grade/section (e.g. <code>7a</code>), and class timetable, shifts, vacations, and exams.</li>
+      <li><strong>Data When Connecting the “School Bell Bridge” Extension (including Minor's Data, Personal Communications &amp; Incidental Health Context):</strong>
+        <ul>
+          <li><em>Student Diary Context:</em> internal Shkolo student ID (<code>pupilId</code>), class year ID (<code>classYearId</code>), class name, and school ID/name (<code>schoolId</code>, <code>schoolName</code>).</li>
+          <li><em>Student Remarks &amp; Praises:</em> feedback type (remark or praise), subject, teacher name, date, time, category badge, and free-text teacher comment. Because teacher remarks/praises are free-text notes that may incidentally contain behavioral, teacher-to-parent communication, or health-related context (even though medical excuse notes, absences, grades, and Shkolo private chats are never read), Chrome Web Store Data Usage conservatively declares <em>Health information</em> and <em>Personal communications</em> (Option a). These records stay <strong>strictly private</strong> to the individual linking account and are never shared with classmates.</li>
+          <li><em>Upcoming Homework, Scheduled Exams &amp; Weekly Timetable:</em> subject, teacher name, homework description or exam title, due date / exam date and time (ordered chronologically), and weekly timetable by day and period. Expired homework and entries without a due date are not collected. <strong>Class Sharing:</strong> <em>Share with class</em> (<code>shareWithClass</code>) is <strong>OFF by default</strong>, so synced homework, exams, and weekly timetable remain <strong>strictly private to your personal profile</strong> unless you explicitly enable class sharing in the extension (which shares them only with users registered in the same school and class).</li>
+          <li><em>Authentication Token:</em> your personal connection code (<code>Bearer token SB1...</code>) generated in School Bell (only its <code>SHA-256</code> hash is stored on the server).</li>
+        </ul>
+      </li>
+      <li><strong>Photo Attachments &amp; Local Optical Character Recognition (OCR):</strong>
+        <ul>
+          <li><em>What is uploaded:</em> Users may optionally upload photos attached to reminders (events/custom alarms) and manual homework entries. Supported formats are PNG, JPEG/JPG, and WebP (up to 4 MB body / 3 MB decoded for OCR scan, and up to 750 KB body / 500 KB decoded for attachments).</li>
+          <li><em>Server storage in isolated folder with mode 0600:</em> Uploaded attachments are stored on our server in an isolated subfolder dedicated to the specific class room (<code>data/attachments/&lt;room-hash&gt;/</code>). The directory is created with <code>0700</code> permissions, and each file is saved with strict <code>0600</code> permissions. Access via <code>/api/attachments/:id</code> requires active authentication within the same class room (requests from other classes or unauthenticated clients return 404/401).</li>
+          <li><em>Local OCR with tesseract — no third parties:</em> Text recognition through <code>/api/ocr/scan</code> is performed <strong>strictly locally on our own server</strong> using <code>tesseract</code> (Bulgarian + English models: <code>bul+eng</code>). During scanning, a temporary file with mode <code>0600</code> is written to the system temporary directory and unlinked immediately upon completion (in a <code>finally</code> block). <strong>No images or extracted texts are ever sent to third parties, external cloud providers, or third-party AI APIs.</strong></li>
+          <li><em>Retention &amp; Deletion:</em> Photos are retained only as long as the linked homework or alarm is active. Unreferenced attachment files are cleaned up automatically. Deleting a homework item permanently deletes its attached photo. When an account is deleted via “Permanently Delete My Account” (<code>/api/auth/delete-account</code>), if the user was the last user in that class room, the entire room attachments directory is permanently deleted from disk.</li>
+        </ul>
+      </li>
+      <li><strong>Cookies &amp; Local Storage (<code>localStorage</code> / <code>chrome.storage.local</code>):</strong>
+        <ul>
+          <li><code>school_bell_session</code> — functional session cookie for web app sign-in (<code>HttpOnly</code>, <code>SameSite=Lax</code>, <code>Secure</code> over HTTPS, valid up to 7 days).</li>
+          <li><code>__Host-sb_admin</code> / <code>sb_admin_session</code> — technical session cookie for the system administrator only (<code>HttpOnly</code>, <code>SameSite=Strict</code>, 15-minute idle timeout / 8-hour max).</li>
+          <li><code>localStorage</code> — stores selected theme, language preference, volume, clock scale, and offline schedule cache.</li>
+          <li><code>chrome.storage.local</code> — before consent is granted, only the consent state is checked; after consent, stores <code>{ consent, version, at }</code>, connection token, <code>autoSync</code> setting (off by default), <code>shareWithClass</code> (off by default), student context, and synced item keys.</li>
+        </ul>
+      </li>
+      <li><strong>Technical Security Logs &amp; Feedback Form (<code>POST /api/feedback</code>):</strong>
+        <ul>
+          <li>IP address and request timestamp in server security logs for abuse prevention, brute-force protection, and rate-limiting, retained for up to <strong>30 days</strong>.</li>
+          <li>Voluntary feedback messages submitted via the feedback form (category and message text — no email address is collected by the form), retained for up to <strong>12 months</strong>.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2>2. Data We Do NOT Collect</h2>
+    <ul>
+      <li>Shkolo login usernames or passwords;</li>
+      <li>Grades, absences, or official medical excuse notes (the medical notes module is never accessed);</li>
+      <li>Private chat messages in Shkolo’s messaging module, national ID numbers (EGN), phone numbers, or home addresses;</li>
+      <li>Bank card or payment details;</li>
+      <li>Browsing history outside the allowed Shkolo diary paths on <code>https://app.shkolo.bg/</code> (<code>/diary/</code>, <code>/ajax/diary/</code>, <code>/pupil/</code>).</li>
+    </ul>
+
+    <h2>3. Purpose, Legal Basis &amp; Limited Use</h2>
+    <p>The use of information received from Shkolo through this extension adheres to the Chrome Web Store User Data Policy, including the Limited Use requirements. Information received from Shkolo through the extension is used only for its single purpose: displaying the weekly class timetable, homework, remarks, praises, and upcoming exams in School Bell (kept private to the linking account by default via <code>shareWithClass = false</code>, or visible to classmates in the same linked class only if explicitly enabled by the user, with remarks/praises always strictly private). Legal basis under GDPR: Art. 6(1)(a) (explicit consent when linking the extension), Art. 6(1)(b) (providing the user-requested service), and Art. 6(1)(f) (information security without commercial purposes). Background hourly auto-sync is <strong>OFF by default</strong> (runs at most once per hour with no parallel requests when enabled, and stops immediately on HTTP 403/429).</p>
+    <p>No user data is sold or transferred to external third-party organizations for their own purposes, advertising, credit scoring, or unrelated purposes. People do not access data contents except with the user's consent, for security reasons, to comply with the law, or in aggregated anonymous form. Oracle Cloud Infrastructure provides hosting infrastructure only.</p>
+
+    <h2>4. Storage, Retention, Security &amp; Admin Scope</h2>
+    <ul>
+      <li><strong>Encryption &amp; Security:</strong> Connections use HTTPS. Database access is restricted. Backups in <code>data/backups/</code> (mode <code>0600</code>) are encrypted with AES-256-GCM (retained up to <strong>14 days</strong>). Server boot volumes are encrypted at rest using Oracle Cloud Infrastructure Block Volume encryption with Oracle-managed keys.</li>
+      <li><strong>Retention Periods:</strong> Expired homework is automatically purged; synced Shkolo exams are kept for the current school year (starting September 1) and prior-year records are purged; security logs are kept up to <strong>30 days</strong>; inactive accounts and feedback up to <strong>12 months</strong>.</li>
+      <li><strong>Minimal Admin Access:</strong> Besides aggregate statistics, the TOTP-protected admin panel displays only registered username, school, class, registration date, last sync timestamp, sync/block status, and extension version (plus an internal pseudonymous ID for support/GDPR actions). It never provides access to homework, remarks, praises, exam contents, Shkolo student IDs, passwords, or connection tokens.</li>
+    </ul>
+
+    <h2>5. Children &amp; Minors (School Environment)</h2>
+    <p>If a user is a student under 14 years of age, account creation and extension linking should be performed with the knowledge and consent of a parent or legal guardian. A parent or guardian may request immediate deletion of an account and all associated data at any time by emailing <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a>.</p>
+
+    <h2>6. Your GDPR Rights, Consent Withdrawal &amp; Account Deletion</h2>
+    <ul>
+      <li><strong>Rights of Access, Rectification, Restriction, Portability &amp; Objection:</strong> Contact <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a> (responses provided within <strong>1 month</strong> under Art. 12(3) GDPR). Supervisory authority: Bulgarian Commission for Personal Data Protection (CPDP, <a href="https://www.cpdp.bg" target="_blank" rel="noopener noreferrer">https://www.cpdp.bg</a>, <code>kzld@cpdp.bg</code>).</li>
+      <li><strong>Consent Withdrawal in Extension Popup:</strong> Clicking <em>“Withdraw consent and delete data”</em> in the popup first calls <code>DELETE /api/shkolo/data</code> if a token is stored (displaying a clear error if it fails) before stopping alarms/offscreen tasks and clearing <code>chrome.storage.local</code>. <strong>Deletes:</strong> local browser data/token, all synced Shkolo remarks/praises, unshared personal Shkolo homework/exams, and the server Shkolo token binding (plus shared class Shkolo homework/exams only if you are the last linked member in the class). <strong>Remains on server:</strong> your School Bell web profile and already-shared class homework/exams/schedule if other classmates use the class room.</li>
+      <li><strong>Complete Server Account Deletion:</strong> In <a href="https://schoolbell.duckdns.org/?lang=en">https://schoolbell.duckdns.org/</a> → “👤 My Profile” → “Permanently Delete My Account” (or via <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a>).</li>
+    </ul>
+
+    <div class="support-box">
+      <a class="btn-support" href="https://revolut.me/cryptohris" target="_blank" rel="noopener noreferrer">
+        ☕ Support the Project · <code>@cryptohris</code>
+      </a>
+      <p class="disclaimer-small">
+        Voluntary tips are completely optional, not payments for service, and grant no special features. Processed externally by Revolut.
+      </p>
+      <p class="disclaimer-small">
+        <a href="/?lang=en">← Back to School Bell</a> ·
+        <a href="/terms#en">Terms of Service</a> ·
+        <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a>
+      </p>
+    </div>
+    </div>
+  </main>
+  <script src="app.js?v=57"></script>
+</body>
+</html>

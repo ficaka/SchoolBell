@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="popup.css">
+  <title>Училищен Будилник Bridge</title>
+</head>
+<body>
+  <header class="head">
+    <img src="icons/icon128.png" alt="" class="logo">
+    <div class="head-text">
+      <h1 data-i18n="headTitle">Училищен Будилник Bridge</h1>
+      <p data-i18n="headSubtitle">Лични домашни, забележки, похвали и изпити, без парола за Shkolo.</p>
+    </div>
+    <button id="popupLangBtn" class="lang-btn" type="button" title="Switch language / Смени езика">EN</button>
+  </header>
+
+  <main>
+    <section id="consentScreen" class="consent-screen">
+      <h2 data-i18n="consentHeading">Разкриване и съгласие</h2>
+      <p class="disclosure" data-i18n-html="consentIntro">
+        За да работи, <strong>Училищен Будилник Bridge</strong> чете от вашата вече отворена сесия в <strong>https://app.shkolo.bg</strong> само:
+      </p>
+      <ul class="consent-list">
+        <li data-i18n="consentItem1">предстоящи домашни работи, контролни/изпити за текущата учебна година (подредени хронологично) и седмична учебна програма;</li>
+        <li data-i18n="consentItem2">лични забележки и похвали за ученика;</li>
+        <li data-i18n-html="consentItem3">учебен контекст (<code>pupilId</code>, клас и училище).</li>
+      </ul>
+      <p class="disclosure" data-i18n-html="consentTransport">
+        Данните се изпращат по HTTPS към <strong>https://schoolbell.duckdns.org</strong> чрез вашия личен код за връзка. Разширението <strong>не съхранява и не изпраща</strong> вашата парола, бисквитки, оценки, отсъствия или лични съобщения. Автоматичната почасова синхронизация е изключена по подразбиране.
+      </p>
+      <p class="disclosure" data-i18n-html="consentSharing">
+        <strong>Споделяне и обхват:</strong> по подразбиране опцията <strong>„Споделяй с класа“ е изключена</strong> — домашните, изпитите за текущата учебна година (с предмет, учител, дата и час) и седмичната учебна програма остават видими <strong>само за вашия профил</strong>, докато изрично не включите споделянето с другите потребители на същия клас в Училищен Будилник. Забележките и похвалите (свободен текст от учители) винаги остават строго лични само за вашия профил.
+      </p>
+      <p class="disclosure" data-i18n-html="consentDeletion">
+        <strong>Какво се изтрива при оттегляне:</strong> ако има въведен код за връзка, разширението първо извиква <code>DELETE /api/shkolo/data</code> на сървъра (трие личните ви Shkolo забележки/похвали, личните Shkolo домашни/изпити и кода за връзка) и след това чисти локалното хранилище на браузъра. Профилът ви в приложението и домашните/изпитите/програмата, вече споделени с класа (когато има други потребители в същия клас), остават на сървъра до пълно изтриване на профила.
+      </p>
+      <p class="disclosure" data-i18n-html="consentParent">
+        Съгласието се дава от <strong>родител или настойник</strong>. Ако ученикът е под 14 години, не давайте съгласие вместо него без знанието на родител.
+      </p>
+      <p class="disclosure" data-i18n-html="consentUnofficial">
+        <strong>Важно:</strong> Неофициален инструмент, несвързан със и неодобрен от Shkolo (Школо ООД). Автоматизираният достъп може да нарушава условията на Shkolo и платформата може да ограничи или прекрати профила ви. Разширението се ползва изцяло на отговорност на потребителя.
+      </p>
+      <p class="consent-links">
+        <a href="https://schoolbell.duckdns.org/privacy" target="_blank" rel="noopener noreferrer" data-i18n="linkPrivacy" data-legal-link="privacy">Политика за поверителност</a>
+        <span>·</span>
+        <a href="https://schoolbell.duckdns.org/terms" target="_blank" rel="noopener noreferrer" data-i18n="linkTerms" data-legal-link="terms">Условия за ползване</a>
+      </p>
+      <div class="consent-actions">
+        <button id="consentAccept" class="primary" type="button" data-i18n="btnAccept">Съгласен съм и продължавам</button>
+        <button id="consentDecline" type="button" data-i18n="btnDecline">Отказвам</button>
+      </div>
+      <div id="consentDeclineNotice" class="status error" hidden data-i18n-html="declineNotice">
+        Без вашето съгласие разширението не чете и не изпраща данни от Shkolo. Можете да приемете по всяко време или да го премахнете от <code>chrome://extensions</code>. Данните, вече синхронизирани на сървъра, се изтриват от приложението чрез „👤 Моят профил“ → „Изтрий моя профил“ в <a href="https://schoolbell.duckdns.org/" target="_blank" rel="noopener noreferrer">Училищен Будилник</a>.
+      </div>
+      <div id="consentRevokedNotice" class="status" hidden>
+        <div id="revokeServerStatus" hidden></div>
+        <p data-i18n-html="revokedTitle"><strong>Съгласието е оттеглено и локалните данни в браузъра са изтрити.</strong></p>
+        <p data-i18n="revokedDeleted">Изтрито: локалните настройки, кодът за връзка, личните Shkolo забележки/похвали, несподелените (лични) Shkolo домашни/изпити и активната Shkolo връзка на сървъра (при наличен токен и интернет връзка).</p>
+        <p data-i18n-html="revokedRemains">Остава на сървъра: самият ви уеб профил в Училищен Будилник, както и домашните/изпитите/учебната програма, споделени с класа, ако в класа има други потребители. За пълно заличаване влезте в <a href="https://schoolbell.duckdns.org/" target="_blank" rel="noopener noreferrer">Училищен Будилник</a> → „👤 Моят профил“ → „Изтрий моя профил завинаги“.</p>
+      </div>
+    </section>
+
+    <div id="appScreen" hidden>
+      <p class="disclosure" data-i18n-html="appIntro">
+        Разширението чете дневника в <strong>app.shkolo.bg</strong> във фонов режим с вече влезлия потребител и изпраща домашни, забележки, похвали, изпити и седмичната програма към <strong>Училищен Будилник</strong> (<code>https://schoolbell.duckdns.org</code>).
+      </p>
+
+      <label class="field">
+        <span data-i18n="labelAppUrl">Адрес на приложението (фиксиран)</span>
+        <input id="appUrl" type="url" value="https://schoolbell.duckdns.org" readonly>
+      </label>
+
+      <label class="field">
+        <span data-i18n="labelToken">Код за връзка</span>
+        <textarea id="token" rows="3" placeholder="Постави кода от „Домашни от Shkolo“ в приложението" data-i18n-placeholder="tokenPlaceholder" spellcheck="false"></textarea>
+      </label>
+
+      <label class="check">
+        <input id="autoSync" type="checkbox">
+        <span data-i18n="labelAutoSync">Автоматична синхронизация на всеки час във фонов режим (по подразбиране изключена — включи я по желание)</span>
+      </label>
+
+      <label class="check">
+        <input id="shareWithClass" type="checkbox">
+        <span data-i18n="labelShareWithClass">Споделяй домашните, изпитите и програмата с класа (по подразбиране изключено — само в твоя профил, докато не го включиш)</span>
+      </label>
+
+      <div class="actions">
+        <button id="saveBtn" class="primary" type="button" data-i18n="btnSave">Запази</button>
+        <button id="testBtn" type="button" data-i18n="btnTest">Тествай</button>
+      </div>
+
+      <button id="syncBtn" class="wide" type="button" data-i18n="btnSyncNow">Синхронизирай сега</button>
+      <button id="openBtn" class="link" type="button" data-i18n="btnOpenShkolo">Отвори Shkolo</button>
+
+      <div id="status" class="status" role="status" aria-live="polite">Зареждане…</div>
+
+      <details>
+        <summary data-i18n="howTitle">Как работи?</summary>
+        <ol>
+          <li data-i18n="howStep1">Влез веднъж в Shkolo в този браузър (с „Запомни ме“).</li>
+          <li data-i18n="howStep2">Постави кода и натисни „Запази“ — първата синхронизация тръгва веднага във фонов режим, без да отваряш таб на Shkolo.</li>
+          <li data-i18n="howStep3">Ако включиш отметката за автоматична синхронизация, данните се обновяват сами на всеки час. Можеш да синхронизираш и ръчно по всяко време.</li>
+          <li data-i18n="howStep4">Разширението изпраща предметите, описания, учители, срокове, забележки, похвали, изпити и седмичната програма, свързани с ученика и класа.</li>
+          <li data-i18n="howStep5">Паролата и бисквитките за Shkolo остават само в браузъра.</li>
+        </ol>
+        <p data-i18n-html="howDisclaimer"><strong>Важно:</strong> Неофициален инструмент, несвързан със и неодобрен от Shkolo (Школо ООД). Използването за четене от Shkolo може да наруши техните условия и да доведе до ограничаване на профила ви; ползва се на отговорност на потребителя.</p>
+      </details>
+
+      <button id="revokeConsentBtn" class="link danger-link" type="button" data-i18n="btnRevoke">Оттегли съгласието и изтрий данните</button>
+      <div id="revokeConfirmBox" class="revoke-confirm" hidden>
+        <p data-i18n-html="revokeConfirmText">При потвърждение разширението ще: (1) изпрати <code>DELETE /api/shkolo/data</code> към сървъра (ако има код за връзка), с което трие синхронизираните Shkolo забележки/похвали, личните Shkolo домашни/изпити и кода за връзка; и (2) изтрие локалните данни и настройки в браузъра. На сървъра остават вашият уеб профил и домашните/изпитите/програмата, споделени с класа (докато има други ученици в класа). За пълно изтриване използвайте „👤 Моят профил“ → „Изтрий моя профил завинаги“ в <a href="https://schoolbell.duckdns.org/" target="_blank" rel="noopener noreferrer">Училищен Будилник</a>.</p>
+        <div class="actions">
+          <button id="revokeConfirmYes" class="danger-btn" type="button" data-i18n="btnRevokeYes">Да, оттегли и изтрий</button>
+          <button id="revokeConfirmCancel" type="button" data-i18n="btnRevokeCancel">Отказ</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-note" data-i18n="footerNote">Личен код · не го споделяй</div>
+    <div class="footer-support" data-support-block>
+      <a class="support-link" href="https://revolut.me/cryptohris" target="_blank" rel="noopener noreferrer">
+        ☕ Подкрепи проекта / Изпрати благодарност · <code>@cryptohris</code>
+      </a>
+      <span class="support-hint">Жестът на благодарност е доброволен, не е плащане за услуга и не дава предимства.</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://schoolbell.duckdns.org/privacy" target="_blank" rel="noopener noreferrer" data-i18n="footerPrivacy" data-legal-link="privacy">Поверителност</a>
+      <span>·</span>
+      <a href="https://schoolbell.duckdns.org/terms" target="_blank" rel="noopener noreferrer" data-i18n="footerTerms" data-legal-link="terms">Условия</a>
+      <span>·</span>
+      <a href="mailto:schoolbell@abv.bg">schoolbell@abv.bg</a>
+    </div>
+  </footer>
+  <script src="popup.js"></script>
+</body>
+</html>
